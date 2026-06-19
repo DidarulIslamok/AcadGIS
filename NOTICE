@@ -1,0 +1,13 @@
+AcadGIS
+Copyright 2026 AcadGIS contributors
+
+This product includes software developed at AcadGIS (https://acadgis.com).
+
+Administrative boundary sample data bundled under acadgis/data/samples/ is
+derived from the GADM database (https://gadm.org), version 4.1, and is used
+for academic / non-commercial purposes in accordance with the GADM license.
+When you download boundaries at runtime, data is retrieved from GADM via the
+`pygadm` package.
+
+This software is licensed under the Apache License, Version 2.0. See the
+LICENSE file for the full text.

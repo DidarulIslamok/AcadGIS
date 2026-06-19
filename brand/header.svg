@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 360" width="1280" height="360" role="img" aria-label="acadgis - academic GIS study-area maps in a few lines of Python">
+  <title>acadgis</title>
+  <desc>Publication-ready academic GIS study-area maps in a few lines of Python.</desc>
+  <defs>
+    <clipPath id="rgH"><path d="M168,176 C214,144 300,146 342,182 C382,216 386,262 364,308 C344,348 298,378 246,366 C198,356 156,330 148,288 C141,248 148,206 168,176 Z"/></clipPath>
+    <linearGradient id="gisH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3ad29f"/><stop offset="0.5" stop-color="#2ec4d6"/><stop offset="1" stop-color="#5a9bff"/>
+    </linearGradient>
+    <style>
+      .d{animation:dw 3.2s ease-in-out infinite}
+      .d.b{animation-delay:.4s}.d.c{animation-delay:.8s}.d.e{animation-delay:1.2s}
+      @keyframes dw{0%,100%{opacity:.6}50%{opacity:1}}
+      .bk{transform-box:fill-box;transform-origin:center;animation:snap 4s ease-in-out infinite}
+      @keyframes snap{0%{transform:scale(1.22);opacity:0}18%{transform:scale(1);opacity:1}88%{transform:scale(1);opacity:1}100%{transform:scale(1.22);opacity:0}}
+      .word{opacity:1;animation:rise 1s ease-out .25s both}
+      .tag{opacity:1;animation:fade 1s ease-out 1.1s both}
+      .route{stroke-dasharray:9 7;animation:dash 3s linear infinite}
+      @keyframes rise{0%{opacity:0;transform:translateY(18px)}100%{opacity:1;transform:translateY(0)}}
+      @keyframes fade{to{opacity:1}}
+      @keyframes dash{to{stroke-dashoffset:-32}}
+      .wm{font-family:'DejaVu Sans','Segoe UI',Arial,sans-serif;font-weight:bold;letter-spacing:-4px}
+      .tg{font-family:'DejaVu Sans','Segoe UI',Arial,sans-serif}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="360" rx="28" fill="#0f2233"/>
+  <g stroke="#2b6cb0" stroke-width="1.5" opacity="0.18">
+    <line x1="0" y1="90" x2="1280" y2="90"/><line x1="0" y1="180" x2="1280" y2="180"/><line x1="0" y1="270" x2="1280" y2="270"/>
+    <line x1="430" y1="0" x2="430" y2="360"/><line x1="700" y1="0" x2="700" y2="360"/><line x1="970" y1="0" x2="970" y2="360"/>
+  </g>
+
+  <g transform="translate(70,52) scale(0.50)">
+    <rect x="16" y="16" width="480" height="480" rx="124" fill="#0f2233"/>
+    <g stroke="#2b6cb0" stroke-width="5" opacity="0.4"><line x1="56" y1="190" x2="456" y2="190"/><line x1="56" y1="320" x2="456" y2="320"/><line x1="190" y1="56" x2="190" y2="456"/><line x1="320" y1="56" x2="320" y2="456"/></g>
+    <g clip-path="url(#rgH)">
+      <rect class="d" x="120" y="110" width="138" height="158" fill="#3ad29f"/>
+      <rect class="d b" x="258" y="110" width="160" height="158" fill="#2ec4d6"/>
+      <rect class="d c" x="120" y="268" width="138" height="150" fill="#5a9bff"/>
+      <rect class="d e" x="258" y="268" width="160" height="150" fill="#ffb567"/>
+      <g stroke="#0f2233" stroke-width="6"><line x1="258" y1="110" x2="258" y2="418"/><line x1="120" y1="268" x2="418" y2="268"/></g>
+    </g>
+    <path d="M168,176 C214,144 300,146 342,182 C382,216 386,262 364,308 C344,348 298,378 246,366 C198,356 156,330 148,288 C141,248 148,206 168,176 Z" fill="none" stroke="#ffffff" stroke-width="9"/>
+    <g class="bk" stroke="#ffffff" stroke-width="18" stroke-linecap="round" fill="none"><path d="M112,168 L112,112 L168,112"/><path d="M400,168 L400,112 L344,112"/><path d="M112,344 L112,400 L168,400"/><path d="M400,344 L400,400 L344,400"/></g>
+  </g>
+
+  <g class="word">
+    <text class="wm" x="320" y="206" font-size="128" fill="#ffffff">Acad<tspan fill="url(#gisH)">GIS</tspan></text>
+    <path d="M326,236 H840" fill="none" stroke="#e76f51" stroke-width="4" stroke-linecap="round" opacity="0.95"/>
+  </g>
+  <text class="tag tg" x="330" y="280" font-size="29" fill="#9fb4c4">publication-ready study-area maps for research</text>
+</svg>

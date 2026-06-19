@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="acadgis logo (light)">
+  <title>acadgis</title>
+  <clipPath id="regionL"><path d="M168,176 C214,144 300,146 342,182 C382,216 386,262 364,308 C344,348 298,378 246,366 C198,356 156,330 148,288 C141,248 148,206 168,176 Z"/></clipPath>
+  <rect x="16" y="16" width="480" height="480" rx="124" fill="#f4efe1"/>
+  <g stroke="#cdd7c9" stroke-width="5">
+    <line x1="56" y1="190" x2="456" y2="190"/><line x1="56" y1="320" x2="456" y2="320"/>
+    <line x1="190" y1="56" x2="190" y2="456"/><line x1="320" y1="56" x2="320" y2="456"/>
+  </g>
+  <g clip-path="url(#regionL)">
+    <rect x="120" y="110" width="138" height="158" fill="#2d6a4f"/>
+    <rect x="258" y="110" width="160" height="158" fill="#1b9aaa"/>
+    <rect x="120" y="268" width="138" height="150" fill="#3b82f6"/>
+    <rect x="258" y="268" width="160" height="150" fill="#f4a261"/>
+    <g stroke="#f4efe1" stroke-width="6"><line x1="258" y1="110" x2="258" y2="418"/><line x1="120" y1="268" x2="418" y2="268"/></g>
+  </g>
+  <path d="M168,176 C214,144 300,146 342,182 C382,216 386,262 364,308 C344,348 298,378 246,366 C198,356 156,330 148,288 C141,248 148,206 168,176 Z" fill="none" stroke="#16263a" stroke-width="9"/>
+  <g stroke="#16263a" stroke-width="18" stroke-linecap="round" fill="none">
+    <path d="M112,168 L112,112 L168,112"/><path d="M400,168 L400,112 L344,112"/>
+    <path d="M112,344 L112,400 L168,400"/><path d="M400,344 L400,400 L344,400"/>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="acadgis icon">
+  <title>acadgis</title>
+  <clipPath id="regionF"><path d="M150,160 C204,122 308,124 354,166 C396,206 402,262 376,316 C352,364 298,398 240,384 C186,372 142,342 134,292 C126,246 132,196 150,160 Z"/></clipPath>
+  <rect x="16" y="16" width="480" height="480" rx="120" fill="#0f2233"/>
+  <g clip-path="url(#regionF)">
+    <rect x="110" y="100" width="148" height="172" fill="#3ad29f"/>
+    <rect x="258" y="100" width="170" height="172" fill="#2ec4d6"/>
+    <rect x="110" y="272" width="148" height="160" fill="#5a9bff"/>
+    <rect x="258" y="272" width="170" height="160" fill="#ffb567"/>
+    <g stroke="#0f2233" stroke-width="9"><line x1="258" y1="100" x2="258" y2="432"/><line x1="110" y1="272" x2="428" y2="272"/></g>
+  </g>
+  <path d="M150,160 C204,122 308,124 354,166 C396,206 402,262 376,316 C352,364 298,398 240,384 C186,372 142,342 134,292 C126,246 132,196 150,160 Z" fill="none" stroke="#ffffff" stroke-width="13"/>
+</svg>

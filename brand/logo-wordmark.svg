@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 360" width="1180" height="360" role="img" aria-label="acadgis">
+  <title>acadgis</title>
+  <defs>
+    <clipPath id="rgW"><path d="M168,176 C214,144 300,146 342,182 C382,216 386,262 364,308 C344,348 298,378 246,366 C198,356 156,330 148,288 C141,248 148,206 168,176 Z"/></clipPath>
+    <linearGradient id="gisW" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2d6a4f"/><stop offset="0.5" stop-color="#1b9aaa"/><stop offset="1" stop-color="#2b6cb0"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(20,-60) scale(0.74)">
+    <rect x="16" y="16" width="480" height="480" rx="124" fill="#0f2233"/>
+    <g stroke="#2b6cb0" stroke-width="5" opacity="0.4"><line x1="56" y1="190" x2="456" y2="190"/><line x1="56" y1="320" x2="456" y2="320"/><line x1="190" y1="56" x2="190" y2="456"/><line x1="320" y1="56" x2="320" y2="456"/></g>
+    <g clip-path="url(#rgW)">
+      <rect x="120" y="110" width="138" height="158" fill="#3ad29f"/><rect x="258" y="110" width="160" height="158" fill="#2ec4d6"/>
+      <rect x="120" y="268" width="138" height="150" fill="#5a9bff"/><rect x="258" y="268" width="160" height="150" fill="#ffb567"/>
+      <g stroke="#0f2233" stroke-width="6"><line x1="258" y1="110" x2="258" y2="418"/><line x1="120" y1="268" x2="418" y2="268"/></g>
+    </g>
+    <path d="M168,176 C214,144 300,146 342,182 C382,216 386,262 364,308 C344,348 298,378 246,366 C198,356 156,330 148,288 C141,248 148,206 168,176 Z" fill="none" stroke="#ffffff" stroke-width="9"/>
+    <g stroke="#ffffff" stroke-width="18" stroke-linecap="round" fill="none"><path d="M112,168 L112,112 L168,112"/><path d="M400,168 L400,112 L344,112"/><path d="M112,344 L112,400 L168,400"/><path d="M400,344 L400,400 L344,400"/></g>
+  </g>
+  <text x="408" y="212" font-family="'DejaVu Sans','Segoe UI',Arial,sans-serif" font-weight="bold" font-size="150" letter-spacing="-4" fill="#16263a">Acad<tspan fill="url(#gisW)">GIS</tspan></text>
+  <text x="412" y="268" font-family="'DejaVu Sans','Segoe UI',Arial,sans-serif" font-size="33" fill="#43586a">academic GIS study-area maps</text>
+</svg>
