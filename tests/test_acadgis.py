@@ -302,6 +302,35 @@ def test_drainage_synthetic():
     assert ax is not None
 
 
+def test_layout_templates_exist():
+    assert set(agis.TEMPLATES) == {"single", "two", "cascade", "series", "grid"}
+
+
+def test_study_area_single():
+    fig = agis.study_area("India", steps=[("district", "Chamoli")],
+                          template="single", download=False)
+    assert len(fig.axes) == 1
+
+
+def test_study_area_two():
+    fig = agis.study_area("India", steps=[("state", "Uttarakhand")],
+                          template="two", download=False)
+    assert len(fig.axes) >= 2
+
+
+def test_study_area_series():
+    fig = agis.study_area(
+        "India", steps=[("state", "Uttarakhand"), ("district", "Chamoli")],
+        template="series", download=False)
+    assert len(fig.axes) >= 3
+
+
+def test_study_area_wrong_panel_count():
+    with pytest.raises(ValueError):
+        agis.study_area("India", steps=[("state", "Uttarakhand")],
+                        template="grid", download=False)
+
+
 def test_save(tmp_path):
     gdf = agis.load_boundaries("Iraq", "state", download=False)
     ax = agis.plot(gdf)

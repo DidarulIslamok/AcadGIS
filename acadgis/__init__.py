@@ -36,6 +36,7 @@ from .data import (
     resolve_level,
 )
 from .inset import StudyArea
+from .layouts import TEMPLATES, study_area
 from .matching import match_one, match_table, normalize
 from .palettes import ALL_PALETTES, get_cmap, get_colors
 from .themes import Theme, get_theme, list_themes
@@ -93,6 +94,8 @@ __all__ = [
     "choropleth",
     "points",
     "StudyArea",
+    "study_area",
+    "TEMPLATES",
     # world maps
     "load_world",
     "highlight_country",

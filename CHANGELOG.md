@@ -4,6 +4,22 @@ All notable changes to **AcadGIS** are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.1] — 2026-06-19
+
+### Added
+- `study_area(country, steps=, template=)` — build the entire multi-panel
+  locator figure in a single call. Five templates: `single`, `two`,
+  `cascade` (two context panels + a focused detail panel), `series` (three
+  uniform panels) and `grid` (2×2). Each preset is fully customizable —
+  `width_ratios`/`height_ratios`/`wspace`/`hspace`/`figsize` for panel sizing,
+  `uniform_panels` for equal panel boxes, `highlight_style`
+  (`overlay`/`rect`/`circle`) + colour/alpha/width for region highlighting,
+  per-panel `graticule`/`north_arrow`/`scale_bar`, and `links`/`link_color`/
+  `link_width`/`link_style`/`box` for the connectors. Returns the Figure with
+  `fig.panels` exposed for hand-drawn overlays.
+- `TEMPLATES` — the preset registry (`single`/`two`/`cascade`/`series`/`grid`).
+- `terrain=True` renders the focus panel as Copernicus GLO-30 shaded relief.
+
 ## [0.1.0] — 2026-06-18
 
 First public release.

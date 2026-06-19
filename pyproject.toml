@@ -4,17 +4,21 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "acadgis"
-version = "0.1.0"
+version = "0.1.1"
 description = "Publication-ready academic GIS study-area maps in a few lines of Python."
 readme = "README_PyPI.md"
 requires-python = ">=3.9"
 license = { text = "Apache-2.0" }
 authors = [
-    { name = "Ripon" , email = "riponce.buet@gmail.com" },
+    { name = "Ripon Chandra Malo" , email = "riponce.buet@gmail.com" },
 ]
 keywords = [
-    "gis", "cartography", "choropleth", "study-area", "map", "geopandas",
-    "academic", "research", "administrative-boundaries", "gadm",
+    "gis", "geospatial", "cartography", "mapping", "map",
+    "study-area-map", "research-map", "choropleth", "choropleth-map",
+    "locator-map", "thesis-map", "publication", "geopandas", "matplotlib",
+    "administrative-boundaries", "gadm", "openstreetmap", "terrain",
+    "hillshade", "dem", "rivers", "spatial-analysis", "qgis-alternative",
+    "academic", "research",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",

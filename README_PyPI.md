@@ -57,6 +57,9 @@ Bangladesh, Iraq, India and the USA ship bundled — everything works offline.
 - Choropleths and graduated symbols with automatic name matching (Chittagong matches
   Chattogram, dropped admin-suffixes, diacritics) and `mapclassify` schemes.
 - Locator insets — the country to region to detail figure with connecting arrows.
+- Layout presets — `study_area()` builds the whole multi-panel figure in one call
+  (`single`, `two`, `cascade`, `series`, `grid`) with uniform or custom panel sizes,
+  customizable connectors and region highlighting.
 - Terrain — shaded relief and hypsometric tint from Copernicus GLO-30 (no API key), with
   realistic land-to-ocean colouring.
 - Hydrology — Natural Earth or dense OpenStreetMap river networks and water bodies.
@@ -78,6 +81,10 @@ agis.points(ax, survey_df, value="value", size_by="value", cmap="magma", legend=
 
 dem = agis.load_dem("Bagrote Valley")
 agis.relief(dem, hillshade=True, ocean_color="#cce5f0")
+
+agis.study_area("Bangladesh",                                  # whole layout, one call
+    steps=[("division", "Dhaka"), ("district", "Madaripur")],
+    template="cascade", terrain=True)
 ```
 
 ## Links and attribution

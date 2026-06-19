@@ -1,0 +1,5 @@
+include LICENSE
+include NOTICE
+include README_PyPI.md
+include CHANGELOG.md
+recursive-include acadgis/data/samples *.geojson

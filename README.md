@@ -110,6 +110,11 @@ agis.relief(dem, hillshade=True, ocean_color="#cce5f0")
 # 6. The signature multi-panel locator
 agis.StudyArea("India", context_level="state").zoom_into(
     "West Bengal", detail_level="district").figure()
+
+# 7. ...or the whole layout in one call — pick a template, the rest is automatic
+agis.study_area("Bangladesh",
+    steps=[("division", "Dhaka"), ("district", "Madaripur")],
+    template="cascade", terrain=True)        # single · two · cascade · series · grid
 ```
 
 Every decoration is customizable — pass `True`/`False`, a style name, or a dict:
@@ -132,6 +137,9 @@ agis.plot(gdf,
 - **Choropleths and graduated symbols** with automatic name matching (renames,
   admin-suffixes, diacritics) and `mapclassify` schemes.
 - **Locator insets** — the country to region to detail figure with connecting arrows.
+- **Layout presets** — `study_area()` builds the whole multi-panel figure in one call:
+  `single`, `two`, `cascade`, `series` or `grid`, with uniform or custom panel sizes,
+  customizable connectors, per-panel decorations, and region highlighting.
 - **Terrain** — shaded relief and hypsometric tint from Copernicus GLO-30 (no API key),
   with realistic land-to-ocean colouring.
 - **Hydrology** — Natural Earth or dense OpenStreetMap river networks and water bodies.
