@@ -4,6 +4,47 @@ All notable changes to **AcadGIS** are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] — 2026-06-20
+
+Full customization of the study-area figure — every decoration is now a `bool`,
+a style string, a dict of options, or a per-panel list, all reachable through a
+single `import acadgis as agis`.
+
+### Added
+- **Grid & ticks** — `graticule` accepts a dict (or per-panel list) for
+  independent control: grid on/off + `grid_color`/`grid_lw`/`grid_alpha`/
+  `grid_style`, square cells (`square`), per-axis `interval`, tick direction
+  (`tick_dir` in/out/inout), `minor` ticks, 4-side labels (`sides`/`tick_sides`),
+  and label `fontsize`/`bold`/`italic`/`font`/`rotate_x`/`rotate_y`.
+  `grid=False` keeps ticks but drops the lines.
+- **North arrow** — `coords="data"` to place by `(lon, lat)`, plus `edge`,
+  `label_color`, `label_size` and `rotation`.
+- **Scale bar** — two new QGIS-style styles `double` and `ticks` (now
+  `bar`/`simple`/`stepped`/`double`/`ticks`), plus `coords="data"`, `edge`,
+  `text_color` and `divisions`.
+- **Per-map zoom** — `study_area(zoom=[…])` and `agis.zoom_axes(ax, factor)`
+  (>1 in, <1 out).
+- **`agis.callout()`** — framed sub-region insets placed anywhere (the
+  Alaska/Hawaii pattern), with `color`/`palette`/`terrain` fill.
+- **Layout** — `panel_scale={index_or_role: factor}` resizes specific panels;
+  `gap` sets easy spacing between maps.
+- **`agis.connect()`** — wrapped panel-to-panel connectors (coordinate systems
+  by name: `data`/`axes`/`figure`, optional arrowhead) — no matplotlib import.
+- **Titles** — `title_inside` / `title_loc` / `title_box` to place a map's title
+  inside the panel.
+- **Colorbar** — `study_area(colorbar={'loc': 'right'|'bottom'|'inside', …})` and
+  `relief(legend_loc=, legend_length=, legend_size=, legend_pad=)`.
+- New top-level exports: `zoom_axes`, `callout`, `connect`.
+
+### Changed
+- `study_area(box=…)` now defaults to **`False`** — the highlight is no longer
+  doubled by a connector box (set `box=True` to bring it back).
+- The graticule now draws **square cells** by default (equal interval on both
+  axes); set `square=False` or per-axis intervals for the old behaviour.
+- The non-terrain focus panel honours `uniform_panels`, and the terrain colorbar
+  no longer shrinks its panel (drawn in a dedicated inset) — panels are more
+  uniform by default.
+
 ## [0.1.1] — 2026-06-19
 
 ### Added

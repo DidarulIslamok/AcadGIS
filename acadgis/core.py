@@ -61,9 +61,12 @@ def _opts(val):
 def _decorate(ax, gdf, theme, *, title, north_arrow, scale_bar, graticule,
               border="solid"):
     if graticule:
-        deco.graticule(ax, color=theme.grid_color, lw=theme.grid_width,
-                       alpha=theme.grid_alpha, fontsize=theme.label_size,
-                       label_color=theme.label_color)
+        gkw = dict(color=theme.grid_color, lw=theme.grid_width,
+                   alpha=theme.grid_alpha, fontsize=theme.label_size,
+                   label_color=theme.label_color)
+        if isinstance(graticule, dict):   # plot(graticule={...}) -> full control
+            gkw.update(graticule)
+        deco.graticule(ax, **gkw)
     else:
         ax.set_xticks([])
         ax.set_yticks([])

@@ -165,7 +165,9 @@ def hillshade(dem: DEM, *, azimuth: float = 315, altitude: float = 45,
 def relief(dem: DEM, *, ax=None, cmap: str = "terrain", hillshade: bool = True,
            blend: float = 0.55, azimuth: float = 315, altitude: float = 45,
            vert_exag: float = 0.0008, legend: bool = True,
-           legend_label: str = "Elevation (m)", title: Optional[str] = None,
+           legend_label: str = "Elevation (m)", legend_loc: str = "right",
+           legend_size: float = 0.03, legend_length: float = 0.72,
+           legend_pad: float = 0.02, title: Optional[str] = None,
            graticule: bool = True, north_arrow=True, scale_bar=True,
            ocean_color: Optional[str] = None, sea_level: float = 0.0,
            vmin: Optional[float] = None, figsize=(9, 9), theme="academic"):
@@ -237,8 +239,21 @@ def relief(dem: DEM, *, ax=None, cmap: str = "terrain", hillshade: bool = True,
                        **sb)
     if legend:
         sm = plt.cm.ScalarMappable(norm=norm, cmap=cmap_obj)
-        cb = fig.colorbar(sm, ax=ax, shrink=0.5, pad=0.02)
+        loc = (legend_loc or "right").lower()
+        if loc == "bottom":
+            cax = ax.inset_axes([(1 - legend_length) / 2, -legend_pad - legend_size,
+                                 legend_length, legend_size])
+            orient = "horizontal"
+        elif loc == "inside":
+            cax = ax.inset_axes([0.05, 0.07, max(0.25, legend_length * 0.4), legend_size])
+            orient = "horizontal"
+        else:  # right (default) — placed just outside, so the map box isn't shrunk
+            cax = ax.inset_axes([1 + legend_pad, (1 - legend_length) / 2,
+                                 legend_size, legend_length])
+            orient = "vertical"
+        cb = fig.colorbar(sm, cax=cax, orientation=orient)
         cb.set_label(legend_label, fontsize=th.label_size + 1)
+        cb.ax.tick_params(labelsize=th.label_size)
     if title:
         ax.set_title(title, fontsize=th.title_size, fontweight=th.title_weight,
                      pad=10)

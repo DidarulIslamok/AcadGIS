@@ -37,6 +37,8 @@ from .data import (
 )
 from .inset import StudyArea
 from .layouts import TEMPLATES, study_area
+from .zoominset import callout, zoom_axes
+from .connectors import connect
 from .matching import match_one, match_table, normalize
 from .palettes import ALL_PALETTES, get_cmap, get_colors
 from .themes import Theme, get_theme, list_themes
@@ -95,6 +97,9 @@ __all__ = [
     "points",
     "StudyArea",
     "study_area",
+    "zoom_axes",
+    "callout",
+    "connect",
     "TEMPLATES",
     # world maps
     "load_world",
