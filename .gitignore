@@ -32,3 +32,6 @@ dist/
 .DS_Store
 .vscode/
 .idea/
+
+# personal build/dev scripts — keep out of the public repo
+scripts/
