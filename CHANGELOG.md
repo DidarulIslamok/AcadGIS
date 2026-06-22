@@ -4,6 +4,22 @@ All notable changes to **AcadGIS** are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.3] — 2026-06-21
+
+### Added
+- **Sea / ocean layer** — show the ocean around a country with one argument.
+  - `agis.add_sea(ax, country=…, source=…, …)` — wraps geopandas/shapely
+    internally, so only `import acadgis` is needed.
+  - `sea=` on `plot()` and `study_area()` — `bool | colour | dict | per-panel list`.
+  - **Sources:** `"auto"` (Natural Earth 110 m, bundled/offline),
+    `"ne10m"` (Natural Earth 10 m land — crisp coastline, downloaded + cached),
+    `"ocean"` (Natural Earth 10 m ocean polygon).
+  - Options: `color`, `extent`/`pad` (auto-reveals the ocean), `background`,
+    `neighbours`, `coastline`, `labels`, `set_view`.
+  - The country's own detailed coast bounds the sea, so there are **no coastline
+    slivers**. Landlocked areas produce an empty sea (no-op). Antimeridian and
+    projected-CRS cases are handled; the land geometry is cached for speed.
+
 ## [0.1.2] — 2026-06-20
 
 Full customization of the study-area figure — every decoration is now a `bool`,

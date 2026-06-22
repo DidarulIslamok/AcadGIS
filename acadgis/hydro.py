@@ -381,3 +381,156 @@ def atlas(area, *, level="country", neighbors=True, rivers="ne",
         ax.set_title(title, fontsize=th.title_size, fontweight=th.title_weight,
                      pad=10)
     return ax
+
+
+# --------------------------------------------------------------------------- #
+# Sea / ocean layer  (sources: "auto" 110m bundled · "ne10m" 10m land · "ocean" 10m ocean)
+# --------------------------------------------------------------------------- #
+SEA_COLOR = "#9ecae9"
+
+_NE10M_URLS = {
+    "ne_10m_land": [
+        "https://naciscdn.org/naturalearth/10m/physical/ne_10m_land.zip",
+        "https://github.com/nvkelso/natural-earth-vector/raw/master/zips/ne_10m_land.zip",
+    ],
+    "ne_10m_ocean": [
+        "https://naciscdn.org/naturalearth/10m/physical/ne_10m_ocean.zip",
+        "https://github.com/nvkelso/natural-earth-vector/raw/master/zips/ne_10m_ocean.zip",
+    ],
+}
+
+
+def _ne10m(name):
+    """Download (once) + cache + read a Natural Earth 10m physical layer."""
+    import urllib.request
+    z = _cache_dir() / f"{name}.zip"
+    if not z.exists():
+        last = None
+        for url in _NE10M_URLS[name]:
+            try:
+                urllib.request.urlretrieve(url, z)
+                break
+            except Exception as exc:  # try the mirror
+                last = exc
+        else:
+            raise RuntimeError(
+                f"Could not download {name} (needs network on first use): {last}")
+    g = gpd.read_file(f"zip://{z}")
+    return g.set_crs("EPSG:4326") if g.crs is None else g
+
+
+_LAND_CACHE = {}
+
+
+def _land_union(source):
+    """Cached land geometry (EPSG:4326) for the chosen source."""
+    if source not in _LAND_CACHE:
+        if source in ("ne10m", "land", "hd", "10m"):
+            geom = _ne10m("ne_10m_land").union_all()
+        else:  # "auto" / "110m"
+            from .world import load_world
+            geom = load_world().union_all()
+        _LAND_CACHE[source] = geom
+    return _LAND_CACHE[source]
+
+
+def _country_geom(country):
+    if country is None:
+        return None, None
+    crs = getattr(country, "crs", None)
+    if hasattr(country, "geometry"):           # GeoDataFrame / GeoSeries
+        return country.geometry.union_all(), crs
+    return country, None                        # a shapely geometry
+
+
+def add_sea(ax, country=None, *, source="auto", color=SEA_COLOR,
+            extent=None, pad=0.0, background="white",
+            neighbours=False, neighbour_color=LAND_COLOR,
+            coastline=False, coastline_color="#5a8fb0",
+            labels=None, set_view=True, zorder=0):
+    """Draw the sea/ocean around a country — no extra imports needed.
+
+    Parameters
+    ----------
+    country:
+        The plotted region (GeoDataFrame/GeoSeries or shapely geometry). Its own
+        detailed coast bounds the sea, so there are no coastline slivers. If
+        ``None``, the sea is everything in view that is not land (good for world maps).
+    source:
+        ``"auto"`` — bundled Natural Earth 110 m (offline, fast).
+        ``"ne10m"`` — Natural Earth 10 m land, downloaded+cached (crisp, recommended).
+        ``"ocean"`` — Natural Earth 10 m ocean polygon, downloaded+cached.
+    color:
+        Ocean fill colour.
+    extent, pad:
+        Map frame ``(minx, miny, maxx, maxy)``; default = current axes view.
+        ``pad`` extends it into the ocean (fraction if <1, else degrees).
+    background:
+        Axes/figure background (the land behind, if ``neighbours`` is off).
+    neighbours, neighbour_color:
+        Fill neighbour land (same source) instead of leaving it as ``background``.
+    coastline, coastline_color:
+        Draw the country's coastline on top.
+    labels:
+        ``{"Bay of Bengal": (lon, lat), ...}`` sea labels.
+
+    Landlocked areas produce an empty sea and draw nothing.
+    """
+    from shapely.geometry import box
+    from shapely.ops import unary_union
+
+    cgeom, ccrs = _country_geom(country)
+    out_crs = ccrs or "EPSG:4326"
+    geographic = str(out_crs).upper() in ("EPSG:4326", "WGS84") or "4326" in str(out_crs)
+
+    if extent is None:
+        x0, x1 = ax.get_xlim()
+        y0, y1 = ax.get_ylim()
+    else:
+        x0, y0, x1, y1 = extent
+    if pad:
+        dx = (x1 - x0) * pad if pad < 1 else pad
+        dy = (y1 - y0) * pad if pad < 1 else pad
+        x0, x1, y0, y1 = x0 - dx, x1 + dx, y0 - dy, y1 + dy
+    if geographic:                              # keep the frame valid (antimeridian/poles)
+        x0, x1 = max(x0, -180.0), min(x1, 180.0)
+        y0, y1 = max(y0, -90.0), min(y1, 90.0)
+    frame = box(x0, y0, x1, y1)
+
+    def _to_out(geom_4326):
+        if str(out_crs).upper() in ("EPSG:4326", "WGS84"):
+            return geom_4326
+        return gpd.GeoSeries([geom_4326], crs="EPSG:4326").to_crs(out_crs).iloc[0]
+
+    if source in ("ocean", "ne10m_ocean"):
+        ocean = _ne10m("ne_10m_ocean").to_crs(out_crs)
+        sea_geom = gpd.clip(ocean, frame).union_all()
+    else:
+        land = _to_out(_land_union(source))
+        mask = unary_union([land, cgeom]) if cgeom is not None else land
+        sea_geom = frame.difference(mask)
+
+    if background:
+        ax.set_facecolor(background)
+        try:
+            ax.figure.set_facecolor(background)
+        except Exception:
+            pass
+    if neighbours:
+        land = _to_out(_land_union(source))
+        gpd.GeoSeries([land], crs=out_crs).clip(frame).plot(
+            ax=ax, facecolor=neighbour_color, edgecolor="none", zorder=zorder + 0.3)
+    if sea_geom is not None and not sea_geom.is_empty:
+        gpd.GeoSeries([sea_geom], crs=out_crs).plot(
+            ax=ax, facecolor=color, edgecolor="none", zorder=zorder)
+    if coastline and cgeom is not None:
+        gpd.GeoSeries([cgeom.boundary], crs=out_crs).plot(
+            ax=ax, color=coastline_color, linewidth=0.6, zorder=zorder + 6)
+    if labels:
+        for name, (lx, ly) in labels.items():
+            ax.annotate(name, xy=(lx, ly), fontsize=10, fontstyle="italic",
+                        color="#1f5d8c", ha="center", zorder=zorder + 6)
+    if set_view:
+        ax.set_xlim(x0, x1)
+        ax.set_ylim(y0, y1)
+    return ax

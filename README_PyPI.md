@@ -63,6 +63,8 @@ Bangladesh, Iraq, India and the USA ship bundled — everything works offline.
 - Terrain — shaded relief and hypsometric tint from Copernicus GLO-30 (no API key), with
   realistic land-to-ocean colouring.
 - Hydrology — Natural Earth or dense OpenStreetMap river networks and water bodies.
+- Sea / ocean — `sea=True` (or `agis.add_sea`) draws a clean ocean around coastal countries
+  (`source="ne10m"` for crisp coasts); sliver-free, landlocked is a no-op.
 - Drainage — stream networks extracted from a DEM.
 - Export — PNG, PDF or SVG at any DPI.
 

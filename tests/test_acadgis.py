@@ -337,3 +337,34 @@ def test_save(tmp_path):
     out = tmp_path / "m.png"
     agis.save(ax, str(out), dpi=60)
     assert out.exists() and out.stat().st_size > 0
+
+
+# --- sea / ocean layer (source="auto" is offline; ne10m/ocean need network) - #
+def test_add_sea_auto_coastal():
+    bd = agis.load_boundaries("Bangladesh", "district")
+    ax = agis.plot(bd, pad=0.3)
+    out = agis.add_sea(ax, country=bd, source="auto")
+    assert out is ax  # returns the axes, no error
+
+
+def test_add_sea_landlocked_is_noop():
+    # a small inland box (no coast) -> empty sea, must not raise
+    from shapely.geometry import box
+    bd = agis.load_boundaries("Bangladesh", "district")
+    ax = agis.plot(bd)
+    inland = box(89.5, 24.0, 90.0, 24.5)  # well inside the country
+    agis.add_sea(ax, country=bd, source="auto", extent=(89.5, 24.0, 90.0, 24.5))
+
+
+def test_plot_sea_param():
+    bd = agis.load_boundaries("Bangladesh", "district")
+    agis.plot(bd, sea=True)                      # bool
+    agis.plot(bd, sea="#bcdcf0")                 # colour
+    agis.plot(bd, sea={"source": "auto", "pad": 0.3})  # dict
+
+
+def test_study_area_sea_param():
+    fig = agis.study_area(
+        "Bangladesh", steps=[("division", "Dhaka"), ("district", "Madaripur")],
+        template="series", sea={"source": "auto"})
+    assert hasattr(fig, "panels")

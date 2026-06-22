@@ -143,6 +143,8 @@ agis.plot(gdf,
 - **Terrain** — shaded relief and hypsometric tint from Copernicus GLO-30 (no API key),
   with realistic land-to-ocean colouring.
 - **Hydrology** — Natural Earth or dense OpenStreetMap river networks and water bodies.
+- **Sea / ocean** — `sea=True` (or `agis.add_sea`) draws a clean ocean around any coastal
+  country; `source="ne10m"` for crisp coastlines. Sliver-free; landlocked is a no-op.
 - **Drainage** — stream networks extracted from a DEM by flow accumulation.
 - **Publication export** — PNG, PDF or SVG at any DPI.
 

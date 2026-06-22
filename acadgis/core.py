@@ -219,6 +219,7 @@ def plot(
     border="solid",
     figsize=(8, 8),
     pad: float = 0.05,
+    sea=False,
 ):
     """Plot a styled administrative map.
 
@@ -282,6 +283,14 @@ def plot(
                      zorder=6)
 
     _apply_extent(ax, gdf, pad=pad)
+
+    # sea / ocean layer (bool | colour | dict); drawn under the map
+    if sea is not False and sea is not None:
+        from .hydro import add_sea
+        so = {} if sea is True else (
+            {"color": sea} if isinstance(sea, str) else dict(sea))
+        add_sea(ax, country=gdf, **so)
+
     _decorate(ax, gdf, th, title=title, north_arrow=north_arrow,
               scale_bar=scale_bar, graticule=graticule, border=border)
 

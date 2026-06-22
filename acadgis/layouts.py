@@ -174,7 +174,7 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
                # sizing
                uniform_panels: bool = True, width_ratios=None, height_ratios=None,
                wspace=None, hspace=None, gap=None, panel_scale=None,
-               figsize=None, zoom=None,
+               figsize=None, zoom=None, sea=None,
                # colours
                palette: str = "spectral", detail_palette: str = "pastel",
                cmap: str = "terrain", suptitle: Optional[str] = None,
@@ -254,6 +254,17 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
     na_list = _per_panel(north_arrow, n, True)
     sb_list = _per_panel(scale_bar, n, True)
     zoom_list = _per_panel(zoom, n, None)
+    sea_list = _per_panel(sea, n, None)
+
+    def _sea(ax, i, panel_gdf):
+        s = sea_list[i]
+        if s is None or s is False:
+            return
+        from .hydro import add_sea
+        opts = {} if s is True else (
+            {"color": s} if isinstance(s, str) else dict(s))
+        opts.setdefault("set_view", False)     # keep the panel's layout extent
+        add_sea(ax, country=panel_gdf, **opts)
     ti_list = _per_panel(title_inside, n, False)
 
     figsize = figsize or {"single": (8, 8), "two": (15, 7), "series": (18, 6.5),
@@ -300,11 +311,13 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
                 ax, gdf[gdf[name_column(gdf)] == hl_name], style=highlight_style,
                 color=highlight_color, edge=highlight_edge, alpha=highlight_alpha,
                 lw=highlight_width)
+            _sea(ax, i, gdf)
             finish(ax, i, True)
         elif spec[0] == "detail_poly":
             _plot(detail_gdf, ax=ax, palette=detail_palette, labels=False,
                   title=detail_title.upper(), graticule=False,
                   north_arrow=na_list[i], scale_bar=sb_list[i])
+            _sea(ax, i, detail_gdf)
             finish(ax, i, True)
         else:
             if terrain:
@@ -322,6 +335,7 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
                 _plot(detail_gdf, ax=ax, palette=detail_palette, labels=False,
                       title=detail_title.upper(), graticule=False,
                       north_arrow=na_list[i], scale_bar=sb_list[i])
+                _sea(ax, i, detail_gdf)        # sea only on polygon focus (terrain has its own ocean_color)
             # non-terrain focus honours uniform_panels (so panel_scale resizes it);
             # terrain panel keeps box aspect (image) -> handled with #10 colorbar
             finish(ax, i, not terrain)

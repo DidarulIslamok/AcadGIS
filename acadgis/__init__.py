@@ -63,6 +63,7 @@ except Exception:  # pragma: no cover
 
 from .hydro import (
     add_rivers,
+    add_sea,
     add_water,
     atlas,
     fetch_osm_rivers,
@@ -114,6 +115,7 @@ __all__ = [
     "load_rivers",
     "load_lakes",
     "add_rivers",
+    "add_sea",
     "add_water",
     "atlas",
     "fetch_osm_rivers",
