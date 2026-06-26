@@ -71,6 +71,21 @@ from .hydro import (
     load_rivers,
 )
 
+# Generic layer system (raster / vector / basemap / topography). The module
+# imports cleanly with the core deps; heavy backends (rasterio/rioxarray for
+# raster & topography, contextily for basemaps) are imported lazily per call.
+from .layers import (
+    add_basemap,
+    add_cities,
+    add_layer,
+    add_raster,
+    add_roads,
+    add_satellite,
+    add_topography,
+    fetch_osm_roads,
+    load_places,
+)
+
 try:
     from .drainage import add_streams, drainage
     _HAVE_DRAINAGE = True
@@ -119,6 +134,16 @@ __all__ = [
     "add_water",
     "atlas",
     "fetch_osm_rivers",
+    # layer system (raster / vector / basemap / topography)
+    "add_raster",
+    "add_layer",
+    "add_basemap",
+    "add_satellite",
+    "add_topography",
+    "add_cities",
+    "add_roads",
+    "fetch_osm_roads",
+    "load_places",
     # drainage (optional: needs pysheds)
     "drainage",
     "add_streams",

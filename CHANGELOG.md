@@ -4,6 +4,38 @@ All notable changes to **AcadGIS** are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.4] — 2026-06-25
+
+### Added
+- **Layer system** — drop any raster or vector onto a map. Every function is an
+  `add_*(ax, …)` overlay, so it composes with `plot()` and every `study_area`
+  panel. Rasters are reprojected to lon/lat automatically.
+  - `agis.add_raster(ax, src, …)` — any GeoTIFF/NetCDF (or rioxarray DataArray)
+    in three modes: **continuous** (`cmap` + `colorbar`), **categorical**
+    (`classes={value: (color, label)}` + legend) and **rgb** (true-colour). An
+    `area` argument clips to a geometry. (needs `acadgis[terrain]`)
+  - `agis.add_layer(ax, src, …)` — any vector source (file path or
+    GeoDataFrame/GeoSeries); auto-detects polygon/line/point and styles each.
+    **Label control** via `labels=`: `None`/`False` (hide) · `"one"`/`1`
+    (single) · an `int` (top-N) · `True`/`"all"` (every feature), with
+    `label_field`, halo, size & colour.
+  - `agis.add_basemap(ax, style=…)` / `agis.add_satellite(ax)` — XYZ tile
+    basemaps (`satellite`, `osm`, `light`, `dark`, `terrain`, `toner`),
+    reprojected to work directly on lon/lat axes. (needs `acadgis[basemap]`)
+  - `agis.add_topography(ax, area=…)` — hypsometric + hillshaded relief from a
+    downloaded DEM, as a composable layer. (needs `acadgis[terrain]`)
+  - `agis.add_cities(ax, area=…, top=N)` + `agis.load_places()` — Natural Earth
+    populated places, ranked by population, with the same label control.
+  - `agis.add_roads(ax, area=…)` + `agis.fetch_osm_roads()` — OpenStreetMap road
+    network, widths scaled by `highway` class.
+- **`highlight_style` on `plot()`** — highlight a region as a solid `fill`
+  (default) or as an `overlay` / `rect` / `circle` marker, with
+  `highlight_color` / `highlight_edge` / `highlight_alpha` / `highlight_width`.
+- **New extras:** `acadgis[basemap]` (contextily + xyzservices) and
+  `acadgis[raster]` (rasterio + rioxarray); both folded into `full`/`dev`.
+- **Z-order convention** documented: sea 0 · basemap/raster 1 · land 5 ·
+  rivers/roads 6 · points/labels 8.
+
 ## [0.1.3] — 2026-06-21
 
 ### Added

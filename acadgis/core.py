@@ -211,6 +211,11 @@ def plot(
     ax=None,
     title: Optional[str] = None,
     highlight: Optional[Union[str, Sequence[str]]] = None,
+    highlight_style: str = "fill",      # fill | overlay | rect | circle
+    highlight_color: Optional[str] = None,
+    highlight_edge: Optional[str] = None,
+    highlight_alpha: float = 0.30,
+    highlight_width: Optional[float] = None,
     labels: bool = False,
     legend: bool = False,
     north_arrow=True,
@@ -278,9 +283,15 @@ def plot(
                 sel.append(m)
         if sel:
             sub = gdf[gdf[name_col].isin(sel)]
-            sub.plot(ax=ax, color=th.highlight_color,
-                     edgecolor=th.highlight_edge, linewidth=th.highlight_width,
-                     zorder=6)
+            hc = highlight_color or th.highlight_color
+            he = highlight_edge or th.highlight_edge
+            hw = highlight_width if highlight_width is not None else th.highlight_width
+            if highlight_style in ("rect", "circle", "overlay"):
+                from .layouts import _apply_highlight   # rect/circle/overlay marker
+                _apply_highlight(ax, sub, style=highlight_style, color=hc,
+                                 edge=he, alpha=highlight_alpha, lw=hw)
+            else:  # "fill" (default) — colour the region solid
+                sub.plot(ax=ax, color=hc, edgecolor=he, linewidth=hw, zorder=6)
 
     _apply_extent(ax, gdf, pad=pad)
 
