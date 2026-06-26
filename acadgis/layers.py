@@ -459,3 +459,139 @@ def add_roads(ax, area=None, *, classes=("motorway", "trunk", "primary"),
     if legend and label:
         ax.legend(loc="upper right", fontsize=7, framealpha=0.92)
     return ax
+
+
+# --------------------------------------------------------------------------- #
+#  CURATED RASTER DATA SOURCES (fetch a known global dataset for an area)
+# --------------------------------------------------------------------------- #
+# Official ESA WorldCover classes + colours (v100 2020 / v200 2021).
+WORLDCOVER_CLASSES = {
+    10: ("#006400", "Tree cover"), 20: ("#ffbb22", "Shrubland"),
+    30: ("#ffff4c", "Grassland"), 40: ("#f096ff", "Cropland"),
+    50: ("#fa0000", "Built-up"), 60: ("#b4b4b4", "Bare / sparse"),
+    70: ("#f0f0f0", "Snow / ice"), 80: ("#0064c8", "Water"),
+    90: ("#0096a0", "Wetland"), 95: ("#00cf75", "Mangroves"),
+    100: ("#fae6a0", "Moss / lichen"),
+}
+_WORLDCOVER_S3 = "https://esa-worldcover.s3.eu-central-1.amazonaws.com"
+_STAC_SEARCH = "https://earth-search.aws.element84.com/v1/search"
+
+
+def _area_bounds(area, *, download=True):
+    """area (name / bbox / GeoDataFrame) -> ((minx,miny,maxx,maxy), polygon|None)."""
+    if hasattr(area, "total_bounds"):
+        geom = area.geometry.union_all() if hasattr(area, "geometry") else None
+        return tuple(map(float, area.total_bounds)), geom
+    if isinstance(area, (list, tuple)) and len(area) == 4:
+        return tuple(map(float, area)), None
+    if isinstance(area, str):
+        from .data import load_boundaries
+        g = None
+        for lvl in (0, 1):
+            try:
+                g = load_boundaries(area, lvl, download=download); break
+            except Exception:
+                continue
+        if g is None:
+            raise ValueError(f"Could not resolve area {area!r}.")
+        return tuple(map(float, g.total_bounds)), g.geometry.union_all()
+    raise TypeError("area must be a name, bbox (minx,miny,maxx,maxy), or GeoDataFrame")
+
+
+def _worldcover_tiles(bbox):
+    """3-degree WorldCover tile names covering ``bbox`` (named by lower-left corner)."""
+    import math
+    minx, miny, maxx, maxy = bbox
+    out = []
+    for la in range(math.floor(miny / 3) * 3, math.floor(maxy / 3) * 3 + 1, 3):
+        for lo in range(math.floor(minx / 3) * 3, math.floor(maxx / 3) * 3 + 1, 3):
+            ns, ew = ("N" if la >= 0 else "S"), ("E" if lo >= 0 else "W")
+            out.append(f"{ns}{abs(la):02d}{ew}{abs(lo):03d}")
+    return out
+
+
+def add_landcover(ax, area, *, year: int = 2021, legend: bool = True,
+                  legend_loc: str = "lower left", opacity: float = 1.0,
+                  clip: bool = True, zorder: int = Z_RASTER, download: bool = True):
+    """Real **ESA WorldCover 10 m** land cover for ``area`` (name / bbox / GeoDataFrame).
+
+    Reads the public cloud-optimized GeoTIFFs with windowed remote requests (no
+    full download) and renders the 11-class map with the official palette + a
+    legend. ``year`` 2021 (v200) or 2020 (v100). Needs ``acadgis[terrain]``.
+    """
+    try:
+        import rioxarray  # noqa: F401
+        from rioxarray.merge import merge_arrays
+    except Exception as exc:  # pragma: no cover
+        raise ImportError(
+            'add_landcover needs rasterio + rioxarray. Install with:\n'
+            '    pip install "acadgis[terrain]"') from exc
+    import rioxarray
+    bbox, geom = _area_bounds(area, download=download)
+    ver, vtag, yr = (("v200/2021", "v200", 2021) if year >= 2021
+                     else ("v100/2020", "v100", 2020))
+    arrs = []
+    for t in _worldcover_tiles(bbox):
+        url = f"{_WORLDCOVER_S3}/{ver}/map/ESA_WorldCover_10m_{yr}_{vtag}_{t}_Map.tif"
+        try:
+            arrs.append(rioxarray.open_rasterio(url, masked=False).rio.clip_box(*bbox))
+        except Exception:
+            continue
+    if not arrs:
+        raise RuntimeError("No ESA WorldCover tiles cover this area (or network failed).")
+    da = arrs[0] if len(arrs) == 1 else merge_arrays(arrs)
+    return add_raster(ax, da, area=(geom if (clip and geom is not None) else None),
+                      categorical=True, classes=WORLDCOVER_CLASSES, legend=legend,
+                      legend_loc=legend_loc, legend_title=f"Land cover (ESA {yr})",
+                      opacity=opacity, zorder=zorder)
+
+
+def add_ndvi(ax, area, *, start: str = "2023-01-01", end: str = "2024-12-31",
+             max_cloud: float = 10, collection: str = "sentinel-2-l2a",
+             cmap: str = "RdYlGn", vmin: float = -0.1, vmax: float = 0.9,
+             colorbar: bool = True, clip: bool = True, zorder: int = Z_RASTER,
+             download: bool = True):
+    """Real **Sentinel-2 NDVI** for ``area`` — the least-cloudy scene in a window.
+
+    Queries the Earth Search STAC API, reads the red & NIR bands (windowed) and
+    computes ``NDVI = (NIR - Red) / (NIR + Red)``. Narrow ``start``/``end`` to a
+    season for a date-specific map. The chosen scene date is stored on
+    ``ax._acadgis_ndvi_date``. Needs ``acadgis[terrain]`` + network.
+    """
+    try:
+        import rioxarray  # noqa: F401
+        from rasterio.warp import transform_bounds
+    except Exception as exc:  # pragma: no cover
+        raise ImportError(
+            'add_ndvi needs rasterio + rioxarray. Install with:\n'
+            '    pip install "acadgis[terrain]"') from exc
+    import requests
+    import rioxarray
+    bbox, geom = _area_bounds(area, download=download)
+    body = {"collections": [collection], "bbox": list(bbox),
+            "datetime": f"{start}T00:00:00Z/{end}T00:00:00Z",
+            "query": {"eo:cloud_cover": {"lt": max_cloud}}, "limit": 50}
+    r = requests.post(_STAC_SEARCH, json=body, timeout=60)
+    r.raise_for_status()
+    feats = r.json().get("features", [])
+    if not feats:
+        raise RuntimeError("No clear Sentinel-2 scene found — widen start/end or "
+                           "raise max_cloud.")
+    feats.sort(key=lambda f: f["properties"].get("eo:cloud_cover", 100))
+    a = feats[0]["assets"]
+    date = feats[0]["properties"]["datetime"][:10]
+    red_k = "red" if "red" in a else "B04"
+    nir_k = "nir" if "nir" in a else "B08"
+    red = rioxarray.open_rasterio(a[red_k]["href"], masked=True)
+    crs = red.rio.crs
+    bx = transform_bounds("EPSG:4326", crs, *bbox)
+    red = red.rio.clip_box(*bx).squeeze().astype("float32")
+    nir = rioxarray.open_rasterio(a[nir_k]["href"], masked=True).rio.clip_box(*bx).squeeze().astype("float32")
+    ndvi = (nir - red) / (nir + red)
+    ndvi.rio.write_crs(crs, inplace=True)
+    ndvi = ndvi.rio.reproject("EPSG:4326")
+    add_raster(ax, ndvi, area=(geom if (clip and geom is not None) else None),
+               cmap=cmap, vmin=vmin, vmax=vmax, colorbar=colorbar,
+               colorbar_label=f"NDVI — {collection} {date}", zorder=zorder)
+    ax._acadgis_ndvi_date = date
+    return ax

@@ -77,7 +77,9 @@ from .hydro import (
 from .layers import (
     add_basemap,
     add_cities,
+    add_landcover,
     add_layer,
+    add_ndvi,
     add_raster,
     add_roads,
     add_satellite,
@@ -144,6 +146,9 @@ __all__ = [
     "add_roads",
     "fetch_osm_roads",
     "load_places",
+    # curated raster data
+    "add_landcover",
+    "add_ndvi",
     # drainage (optional: needs pysheds)
     "drainage",
     "add_streams",

@@ -111,3 +111,18 @@ def test_basemap_bad_style():
     fig, ax = plt.subplots(); ax.set_xlim(90, 91); ax.set_ylim(23, 24)
     with pytest.raises(ValueError):
         agis.add_basemap(ax, style="not-a-style")
+
+
+# --- curated raster shortcuts (offline checks) ----------------------------- #
+def test_curated_exposed():
+    assert callable(agis.add_landcover) and callable(agis.add_ndvi)
+
+
+def test_worldcover_tile_naming():
+    from acadgis.layers import _worldcover_tiles
+    assert _worldcover_tiles((90.2, 23.6, 90.6, 24.0)) == ["N21E090", "N24E090"]
+    # multi-tile bbox -> 3x2 grid
+    assert _worldcover_tiles((89.0, 21.0, 93.0, 25.0)) == [
+        "N21E087", "N21E090", "N21E093", "N24E087", "N24E090", "N24E093"]
+    # southern / western hemisphere
+    assert _worldcover_tiles((-60.5, -34.2, -60.1, -33.9)) == ["S36W063"]

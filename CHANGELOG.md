@@ -28,6 +28,13 @@ All notable changes to **AcadGIS** are documented here. The format follows
     populated places, ranked by population, with the same label control.
   - `agis.add_roads(ax, area=…)` + `agis.fetch_osm_roads()` — OpenStreetMap road
     network, widths scaled by `highway` class.
+- **Curated raster data** — fetch a real global dataset for an area with one call
+  (no GeoTIFF needed):
+  - `agis.add_landcover(ax, area)` — ESA WorldCover 10 m land cover (public COGs,
+    windowed remote read) with the official 11-class palette + legend.
+  - `agis.add_ndvi(ax, area)` — Sentinel-2 NDVI: queries the Earth Search STAC
+    API for the least-cloudy scene in a date window and computes
+    `(NIR-Red)/(NIR+Red)`. (both need `acadgis[terrain]` + network)
 - **`highlight_style` on `plot()`** — highlight a region as a solid `fill`
   (default) or as an `overlay` / `rect` / `circle` marker, with
   `highlight_color` / `highlight_edge` / `highlight_alpha` / `highlight_width`.
