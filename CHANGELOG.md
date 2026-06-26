@@ -18,7 +18,8 @@ All notable changes to **AcadGIS** are documented here. The format follows
     GeoDataFrame/GeoSeries); auto-detects polygon/line/point and styles each.
     **Label control** via `labels=`: `None`/`False` (hide) · `"one"`/`1`
     (single) · an `int` (top-N) · `True`/`"all"` (every feature), with
-    `label_field`, halo, size & colour.
+    `label_field`, `rank_field` (rank which features get labelled, e.g. by
+    population), halo, size & colour.
   - `agis.add_basemap(ax, style=…)` / `agis.add_satellite(ax)` — XYZ tile
     basemaps (`satellite`, `osm`, `light`, `dark`, `terrain`, `toner`),
     reprojected to work directly on lon/lat axes. (needs `acadgis[basemap]`)

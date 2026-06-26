@@ -178,7 +178,8 @@ def add_layer(ax, src, *, area=None, color: Optional[str] = None,
               linewidth: float = 0.8, markersize: float = 26, marker: str = "o",
               alpha: float = 1.0, label: Optional[str] = None,
               labels: Union[bool, str, int, None] = None,
-              label_field: Optional[str] = None, label_size: float = 7,
+              label_field: Optional[str] = None, rank_field: Optional[str] = None,
+              label_size: float = 7,
               label_color: str = "#222", label_halo: bool = True,
               legend: bool = False, legend_loc: str = "upper right",
               clip: bool = True, zorder: Optional[int] = None):
@@ -191,7 +192,8 @@ def add_layer(ax, src, *, area=None, color: Optional[str] = None,
     Label control via ``labels``: ``None``/``False`` = none (default) ·
     ``True``/``"all"`` = every feature · ``"one"``/``1`` = a single label · an
     ``int`` = that many. ``label_field`` chooses the column (auto-detected if
-    omitted). Returns ``ax``.
+    omitted); ``rank_field`` ranks which features get labelled when ``labels`` is
+    ``"one"``/an ``int`` (e.g. ``rank_field="pop"`` → label the biggest). Returns ``ax``.
     """
     gdf = src if isinstance(src, (gpd.GeoDataFrame, gpd.GeoSeries)) else gpd.read_file(src)
     if isinstance(gdf, gpd.GeoSeries):
@@ -225,7 +227,7 @@ def add_layer(ax, src, *, area=None, color: Optional[str] = None,
 
     field = _pick_label_field(gdf, label_field) if labels not in (None, False) else None
     if field:
-        sel = _select_labels(gdf, labels)
+        sel = _select_labels(gdf, labels, rank_field=rank_field)
         _draw_labels(ax, sel, field, size=label_size, color=label_color,
                      halo=label_halo, zorder=Z_POINT + 1)
     if legend and label:

@@ -56,6 +56,14 @@ def test_add_layer_points_label_control():
         assert len(ax.collections) >= 1                # the scatter
 
 
+def test_add_layer_rank_field():
+    g = _points()                      # pops A=30, B=10, C=20
+    fig, ax = plt.subplots()
+    ax.set_xlim(88, 92); ax.set_ylim(22, 25)
+    agis.add_layer(ax, g, labels=2, label_field="name", rank_field="pop")
+    assert sorted(t.get_text() for t in ax.texts) == ["A", "C"]   # top-2 by pop
+
+
 def test_add_layer_lines_and_polygons():
     line = gpd.GeoDataFrame(
         geometry=[LineString([(90, 23), (91, 24)])], crs="EPSG:4326")
