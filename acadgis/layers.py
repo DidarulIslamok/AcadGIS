@@ -132,7 +132,8 @@ def add_raster(ax, src, *, area=None, cmap: str = "viridis", categorical: bool =
     if geoms is not None:
         da = da.rio.clip(geoms, crs="EPSG:4326", drop=True, all_touched=True)
 
-    arr = da.values  # (band, y, x)
+    arr = da.values  # (band, y, x) or (y, x) for a computed single-band array
+    band2d = arr if arr.ndim == 2 else arr[0]
     xs, ys = da["x"].values, da["y"].values
     left, right = float(xs.min()), float(xs.max())
     bottom, top = float(ys.min()), float(ys.max())
@@ -150,7 +151,7 @@ def add_raster(ax, src, *, area=None, cmap: str = "viridis", categorical: bool =
         import matplotlib.patches as mpatches
         if not classes:
             raise ValueError("categorical=True needs classes={value: (color, label)}")
-        band = arr[0].astype(float)
+        band = band2d.astype(float)
         vals = sorted(classes)
         cmap_c = ListedColormap([classes[v][0] for v in vals])
         norm = BoundaryNorm([vals[0] - 0.5] + [v + 0.5 for v in vals], cmap_c.N)
@@ -161,7 +162,7 @@ def add_raster(ax, src, *, area=None, cmap: str = "viridis", categorical: bool =
             ax.legend(handles=h, loc=legend_loc, fontsize=7, framealpha=0.92,
                       title=legend_title)
     else:
-        band = arr[0].astype(float)
+        band = band2d.astype(float)
         im = ax.imshow(band, extent=extent, origin=origin, cmap=cmap, vmin=vmin,
                        vmax=vmax, zorder=zorder, alpha=opacity, interpolation=interpolation)
         if colorbar:
