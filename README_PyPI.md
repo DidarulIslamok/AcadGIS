@@ -66,6 +66,15 @@ Bangladesh, Iraq, India and the USA ship bundled — everything works offline.
 - Sea / ocean — `sea=True` (or `agis.add_sea`) draws a clean ocean around coastal countries
   (`source="ne10m"` for crisp coasts); sliver-free, landlocked is a no-op.
 - Drainage — stream networks extracted from a DEM.
+- Layers — `add_raster` (any GeoTIFF: continuous / categorical / RGB), `add_layer`
+  (any vector, auto-styled, label control), `add_basemap`/`add_satellite` (6 tile
+  styles), `add_topography`, `add_cities`, `add_roads`, and curated real data:
+  `add_landcover` (ESA WorldCover 10 m) + `add_ndvi` (Sentinel-2).
+- Thematic maps — the full catalogue: heat maps (`add_heatmap`), interpolated
+  isopleth surfaces and labelled isolines (`interpolate_field` →
+  `add_isopleth`/`add_contours`), dot-density (`dot_density`), bivariate
+  choropleths with a 2-D legend (`bivariate`), Dorling / non-contiguous
+  cartograms (`cartogram`).
 - Export — PNG, PDF or SVG at any DPI.
 
 ## Quick start

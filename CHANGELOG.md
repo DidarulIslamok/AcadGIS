@@ -4,6 +4,32 @@ All notable changes to **AcadGIS** are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] — 2026-06-26
+
+### Added
+- **Thematic map types** — completes the standard thematic catalogue (choropleth
+  and graduated symbols already shipped). All single-import, publication-ready:
+  - `agis.interpolate_field(lon, lat, values, …)` — sparse samples → smooth grid
+    (numpy Gaussian kernel, no SciPy), with `clip=` to mask the ocean/outside.
+    The shared engine for the isopleth/isoline/heatmap family.
+  - `agis.add_isopleth(ax, data, …)` — filled interpolated surface (filled
+    contours). `data` may be the `(Z, extent)` from `interpolate_field`, a bare
+    2-D array + `extent=`, a `DEM`, or a GeoTIFF path/DataArray.
+  - `agis.add_contours(ax, data, …)` — isolines with inline labels (isotherms,
+    isobars, elevation contours). Same input forms.
+  - `agis.add_heatmap(ax, lon, lat, kind=…)` — point-density surface.
+    `"kde"` (smooth, weighted, best for sparse features), `"hexbin"` (dense event
+    data) or `"auto"`.
+  - `agis.dot_density(ax, gdf, value, per=…)` — classic dot-density (1 dot =
+    `per` units), rejection-sampled inside each region, deterministic `seed`,
+    `max_dots` guard.
+  - `agis.bivariate(gdf, x, y)` — two variables at once via a 3×3 blended
+    palette (`BIVARIATE_PALETTE`, customizable) + an automatic 2-D legend.
+  - `agis.cartogram(gdf, value, kind=…)` — `"dorling"` (circles ∝ value with
+    overlap repulsion + labels) and `"noncontig"` (regions scaled in place;
+    median-normalized + clipped so shapes never collapse), with ghost outlines
+    and optional colorbar. True contiguous cartograms remain on the roadmap.
+
 ## [0.1.4] — 2026-06-25
 
 ### Added

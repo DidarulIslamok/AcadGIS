@@ -88,6 +88,19 @@ from .layers import (
     load_places,
 )
 
+# Thematic map types (heatmap, isopleth, isolines, dot-density, bivariate,
+# cartogram) — completes the standard thematic catalogue.
+from .thematic import (
+    BIVARIATE_PALETTE,
+    add_contours,
+    add_heatmap,
+    add_isopleth,
+    bivariate,
+    cartogram,
+    dot_density,
+    interpolate_field,
+)
+
 try:
     from .drainage import add_streams, drainage
     _HAVE_DRAINAGE = True
@@ -149,6 +162,15 @@ __all__ = [
     # curated raster data
     "add_landcover",
     "add_ndvi",
+    # thematic map types
+    "interpolate_field",
+    "add_isopleth",
+    "add_contours",
+    "add_heatmap",
+    "dot_density",
+    "bivariate",
+    "cartogram",
+    "BIVARIATE_PALETTE",
     # drainage (optional: needs pysheds)
     "drainage",
     "add_streams",

@@ -146,6 +146,16 @@ agis.plot(gdf,
 - **Sea / ocean** — `sea=True` (or `agis.add_sea`) draws a clean ocean around any coastal
   country; `source="ne10m"` for crisp coastlines. Sliver-free; landlocked is a no-op.
 - **Drainage** — stream networks extracted from a DEM by flow accumulation.
+- **Layers** — drop anything on a map: `add_raster` (any GeoTIFF: continuous /
+  categorical / RGB), `add_layer` (any vector, auto-styled, label control),
+  `add_basemap`/`add_satellite` (6 tile styles), `add_topography`, `add_cities`,
+  `add_roads`, plus curated real data: `add_landcover` (ESA WorldCover 10 m) and
+  `add_ndvi` (Sentinel-2).
+- **Thematic maps — the full catalogue** — choropleth, graduated symbols,
+  heat maps (`add_heatmap`), interpolated isopleth surfaces and labelled isolines
+  (`interpolate_field` → `add_isopleth`/`add_contours`), dot-density
+  (`dot_density`), bivariate choropleths with a 2-D legend (`bivariate`) and
+  Dorling / non-contiguous cartograms (`cartogram`).
 - **Publication export** — PNG, PDF or SVG at any DPI.
 
 ---
