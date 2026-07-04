@@ -29,6 +29,10 @@ All notable changes to **AcadGIS** are documented here. The format follows
     overlap repulsion + labels) and `"noncontig"` (regions scaled in place;
     median-normalized + clipped so shapes never collapse), with ghost outlines
     and optional colorbar. True contiguous cartograms remain on the roadmap.
+- **`study_area()` layer toggles** — `sea`, `rivers` and `labels` are now
+  first-class arguments, each a scalar (all panels) or a per-panel list, so you
+  can turn the ocean, river network and region-name labels on/off per map:
+  `sea=[True, False, False]`, `rivers={'source': 'osm'}`, `labels=[False, True, False]`.
 - **Connector customization on `study_area()`** — `links=` now also accepts a
   dict for full control of the panel-to-panel connectors:
   `single` (one line per hop), `shrink=(a, b)` (trim/stretch each end in

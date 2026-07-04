@@ -65,3 +65,24 @@ def test_links_show_false():
     fig = agis.study_area("Bangladesh", STEPS, template="series", download=False,
                           links={"show": False, "dots": True})
     assert len(_cps(fig)) == 0
+
+
+# --- per-panel layer toggles (offline: bundled data + Natural Earth 50m/110m) --- #
+def test_study_area_labels_per_panel():
+    fig = agis.study_area("Bangladesh", STEPS, template="series",
+                          labels=[False, True, False], download=False)
+    assert len(fig.panels) == 3
+    # the division panel gains region-name texts beyond its title
+    assert len(fig.panels[1].texts) > len(fig.panels[0].texts)
+
+
+def test_study_area_sea_offline():
+    fig = agis.study_area("Bangladesh", STEPS, template="series",
+                          sea=[True, False, False], download=False)
+    assert len(fig.panels[0].patches) >= 1        # sea polygon on the country panel
+
+
+def test_study_area_rivers_offline():
+    fig = agis.study_area("Bangladesh", STEPS, template="series",
+                          rivers=[{"scale": "50m"}, False, False], download=False)
+    assert len(fig.panels) == 3                   # accepted; runs offline (bundled 50m)

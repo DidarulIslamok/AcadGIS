@@ -194,7 +194,7 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
                # sizing
                uniform_panels: bool = True, width_ratios=None, height_ratios=None,
                wspace=None, hspace=None, gap=None, panel_scale=None,
-               figsize=None, zoom=None, sea=None,
+               figsize=None, zoom=None, sea=None, rivers=None, labels=False,
                # colours
                palette: str = "spectral", detail_palette: str = "pastel",
                cmap: str = "terrain", suptitle: Optional[str] = None,
@@ -202,10 +202,22 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
                colorbar=None, download: bool = True):
     """Build a multi-panel study-area figure from a preset ``template``.
 
-    Highlight ``highlight_style`` ∈ {overlay, rect, circle}. ``graticule`` and
-    ``graticule_interval`` (and ``north_arrow``/``scale_bar``) accept a scalar
-    (all panels) or a per-panel list. ``uniform_panels=True`` keeps panel boxes
-    the same size (no shrink-to-aspect). See module docstring for the rest.
+    Highlight ``highlight_style`` ∈ {overlay, rect, circle}. ``graticule``,
+    ``graticule_interval``, ``north_arrow``, ``scale_bar``, ``sea``, ``rivers``
+    and ``labels`` each accept a scalar (all panels) or a per-panel list.
+    ``uniform_panels=True`` keeps panel boxes the same size (no shrink-to-aspect).
+
+    Toggle layers on/off, globally or per panel::
+
+        sea=True                        # ocean on every panel (or a colour / dict)
+        sea=[False, True, {'source': 'ne10m', 'color': '#a9d3e8'}]
+        rivers=True                     # Natural Earth rivers (or a colour / dict of
+                                        # add_rivers options: source='osm', scale='10m', …)
+        labels=[False, False, True]     # region name labels only on the focus panel
+        scale_bar=[False, True, True]   # per-panel scale bars
+        graticule={'grid': True, 'sides': 'lb', 'tick_dir': 'in', 'fontsize': 6}
+
+    See module docstring for the rest.
 
     ``links`` may be ``True``/``False`` or a dict for full connector control::
 
@@ -310,6 +322,17 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
             {"color": s} if isinstance(s, str) else dict(s))
         opts.setdefault("set_view", False)     # keep the panel's layout extent
         add_sea(ax, country=panel_gdf, **opts)
+    rivers_list = _per_panel(rivers, n, None)
+    lb_list = _per_panel(labels, n, False)
+
+    def _rivers(ax, i, panel_gdf):
+        r = rivers_list[i]
+        if r is None or r is False:
+            return
+        from .hydro import add_rivers
+        opts = {} if r is True else (
+            {"color": r} if isinstance(r, str) else dict(r))
+        add_rivers(ax, area=panel_gdf, download=download, **opts)
     ti_list = _per_panel(title_inside, n, False)
 
     figsize = figsize or {"single": (8, 8), "two": (15, 7), "series": (18, 6.5),
@@ -350,19 +373,21 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
     for i, (ax, spec) in enumerate(zip(axes, order)):
         if spec[0] == "ctx":
             gdf, hl_name, title = context[spec[1]]
-            _plot(gdf, ax=ax, palette=palette, labels=False, title=title.upper(),
+            _plot(gdf, ax=ax, palette=palette, labels=lb_list[i], title=title.upper(),
                   graticule=False, north_arrow=na_list[i], scale_bar=sb_list[i])
             panel_geom[i] = _apply_highlight(
                 ax, gdf[gdf[name_column(gdf)] == hl_name], style=highlight_style,
                 color=highlight_color, edge=highlight_edge, alpha=highlight_alpha,
                 lw=highlight_width)
             _sea(ax, i, gdf)
+            _rivers(ax, i, gdf)
             finish(ax, i, True)
         elif spec[0] == "detail_poly":
-            _plot(detail_gdf, ax=ax, palette=detail_palette, labels=False,
+            _plot(detail_gdf, ax=ax, palette=detail_palette, labels=lb_list[i],
                   title=detail_title.upper(), graticule=False,
                   north_arrow=na_list[i], scale_bar=sb_list[i])
             _sea(ax, i, detail_gdf)
+            _rivers(ax, i, detail_gdf)
             finish(ax, i, True)
         else:
             if terrain:
@@ -377,10 +402,11 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
                        graticule=False, north_arrow=na_list[i], scale_bar=sb_list[i],
                        **{"legend_label": "Elevation (m)", **cbkw})
             else:
-                _plot(detail_gdf, ax=ax, palette=detail_palette, labels=False,
+                _plot(detail_gdf, ax=ax, palette=detail_palette, labels=lb_list[i],
                       title=detail_title.upper(), graticule=False,
                       north_arrow=na_list[i], scale_bar=sb_list[i])
                 _sea(ax, i, detail_gdf)        # sea only on polygon focus (terrain has its own ocean_color)
+                _rivers(ax, i, detail_gdf)
             # non-terrain focus honours uniform_panels (so panel_scale resizes it);
             # terrain panel keeps box aspect (image) -> handled with #10 colorbar
             finish(ax, i, not terrain)
