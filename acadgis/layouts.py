@@ -118,7 +118,9 @@ def _apply_highlight(ax, region_gdf, *, style, color, edge, alpha, lw, pad=0.12)
 
 
 def _box_link(fig, src_ax, geom, dst_ax, *, color, lw, linestyle, box,
-              src_pick, dst_corners, pad=0.18):
+              src_pick, dst_corners, pad=0.18, shrink=(0.0, 0.0),
+              dots=False, dot_size=6.0, dot_color=None, alpha=1.0):
+    from matplotlib.lines import Line2D
     from matplotlib.patches import ConnectionPatch, Rectangle
 
     minx, miny, maxx, maxy = geom.bounds
@@ -129,12 +131,30 @@ def _box_link(fig, src_ax, geom, dst_ax, *, color, lw, linestyle, box,
         src_ax.add_patch(Rectangle((x0, y0), w, h, fill=False, edgecolor=color,
                                    linewidth=lw, linestyle=linestyle, zorder=50))
     corners = {"tl": (x0, y0 + h), "tr": (x0 + w, y0 + h),
-               "bl": (x0, y0), "br": (x0 + w, y0)}
+               "bl": (x0, y0), "br": (x0 + w, y0),
+               "c": (x0 + w / 2, y0 + h / 2),
+               "t": (x0 + w / 2, y0 + h), "b": (x0 + w / 2, y0),
+               "l": (x0, y0 + h / 2), "r": (x0 + w, y0 + h / 2)}
+    sa, sb = shrink if isinstance(shrink, (list, tuple)) else (shrink, shrink)
+    dc = dot_color or color
     for s, d in zip(src_pick, dst_corners):
-        fig.add_artist(ConnectionPatch(xyA=corners[s], coordsA=src_ax.transData,
+        # source anchor: a named corner/edge ("tr", "c", "l", …) or an explicit
+        # (lon, lat) point in the source panel's data coordinates
+        xyA = corners[s] if isinstance(s, str) else tuple(s)
+        fig.add_artist(ConnectionPatch(xyA=xyA, coordsA=src_ax.transData,
                                        xyB=d, coordsB=dst_ax.transAxes,
                                        color=color, lw=lw, linestyle=linestyle,
-                                       zorder=50, clip_on=False))
+                                       alpha=alpha, zorder=50, clip_on=False,
+                                       shrinkA=sa, shrinkB=sb))
+        if dots:                        # enlargeable endpoint markers
+            fig.add_artist(Line2D([xyA[0]], [xyA[1]], transform=src_ax.transData,
+                                  marker="o", markersize=dot_size, color=dc,
+                                  markeredgecolor="white", markeredgewidth=0.8,
+                                  linestyle="none", zorder=51, clip_on=False))
+            fig.add_artist(Line2D([d[0]], [d[1]], transform=dst_ax.transAxes,
+                                  marker="o", markersize=dot_size, color=dc,
+                                  markeredgecolor="white", markeredgewidth=0.8,
+                                  linestyle="none", zorder=51, clip_on=False))
 
 
 def _axes_for(fig, template, geom):
@@ -166,7 +186,7 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
                highlight_edge: Optional[str] = None, highlight_alpha: float = 0.30,
                highlight_width: float = 2.0,
                # connectors
-               links: bool = True, link_color: Optional[str] = None,
+               links=True, link_color: Optional[str] = None,
                link_width: float = 1.6, link_style: str = "-", box: bool = False,
                # graticule (per-panel: scalar or list)
                graticule=True, graticule_interval=None,
@@ -186,6 +206,21 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
     ``graticule_interval`` (and ``north_arrow``/``scale_bar``) accept a scalar
     (all panels) or a per-panel list. ``uniform_panels=True`` keeps panel boxes
     the same size (no shrink-to-aspect). See module docstring for the rest.
+
+    ``links`` may be ``True``/``False`` or a dict for full connector control::
+
+        links={'single': True,          # one line per hop instead of two
+               'shrink': (8, -14),      # trim/extend each end, in points
+                                        # (positive = shrink, negative = stretch)
+               'dots': True,            # endpoint markers…
+               'dot_size': 9,           # …enlarged
+               'dot_color': '#b30000',
+               'alpha': 0.9, 'pad': 0.25,
+               'anchors': [('r', (0.0, 0.5))],   # where lines attach:
+               # source = corner/edge name (tl·tr·bl·br·t·b·l·r·c) or a
+               # (lon, lat) point; destination = (x, y) axes fraction.
+               # A list applies to every hop; a dict {hop_index: […]} per hop.
+               'color': …, 'width': …, 'style': …, 'box': …}   # same as link_*
     """
     import matplotlib.pyplot as plt
 
@@ -198,6 +233,16 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
     steps = [tuple(s) for s in (steps or [])]
     if template not in TEMPLATES:
         raise ValueError(f"Unknown template {template!r}. Options: {list(TEMPLATES)}")
+    # links may be bool OR a dict of connector options:
+    #   {'color', 'width', 'style', 'box', 'single', 'shrink', 'dots',
+    #    'dot_size', 'dot_color', 'alpha', 'pad', 'anchors'}
+    link_opts = dict(links) if isinstance(links, dict) else {}
+    if link_opts:
+        links = link_opts.pop("show", True)
+        link_color = link_opts.pop("color", link_color)
+        link_width = link_opts.pop("width", link_width)
+        link_style = link_opts.pop("style", link_style)
+        box = link_opts.pop("box", box)
     link_color = link_color or highlight_color
     highlight_edge = highlight_edge or highlight_color
 
@@ -341,11 +386,25 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
             finish(ax, i, not terrain)
 
     if links and template in _LINKS:
-        for (a, b, src_pick, dst_corners) in _LINKS[template]:
+        anchors = link_opts.get("anchors")
+        for i, (a, b, src_pick, dst_corners) in enumerate(_LINKS[template]):
             if a < len(axes) and b < len(axes) and panel_geom.get(a) is not None:
+                sp, dcorn = list(src_pick), list(dst_corners)
+                ov = anchors.get(i) if isinstance(anchors, dict) else anchors
+                if ov:                       # [(src_anchor, (fx, fy)), …] per line
+                    sp = [p[0] for p in ov]
+                    dcorn = [p[1] for p in ov]
+                if link_opts.get("single"):  # one line per hop instead of two
+                    sp, dcorn = sp[:1], dcorn[:1]
                 _box_link(fig, axes[a], panel_geom[a], axes[b], color=link_color,
                           lw=link_width, linestyle=link_style, box=box,
-                          src_pick=src_pick, dst_corners=dst_corners)
+                          src_pick=sp, dst_corners=dcorn,
+                          pad=link_opts.get("pad", 0.18),
+                          shrink=link_opts.get("shrink", 0.0),
+                          dots=link_opts.get("dots", False),
+                          dot_size=link_opts.get("dot_size", 6.0),
+                          dot_color=link_opts.get("dot_color"),
+                          alpha=link_opts.get("alpha", 1.0))
 
     if suptitle:
         fig.suptitle(suptitle, fontsize=15, fontweight="bold", y=0.98)

@@ -29,6 +29,14 @@ All notable changes to **AcadGIS** are documented here. The format follows
     overlap repulsion + labels) and `"noncontig"` (regions scaled in place;
     median-normalized + clipped so shapes never collapse), with ghost outlines
     and optional colorbar. True contiguous cartograms remain on the roadmap.
+- **Connector customization on `study_area()`** — `links=` now also accepts a
+  dict for full control of the panel-to-panel connectors:
+  `single` (one line per hop), `shrink=(a, b)` (trim/stretch each end in
+  points — negative extends), `dots`/`dot_size`/`dot_color` (enlargeable
+  endpoint markers), `alpha`, `pad` (locator-box padding), `anchors` (attach at
+  any corner/edge name `tl·tr·bl·br·t·b·l·r·c` or an explicit `(lon, lat)`
+  point → any `(x, y)` axes fraction on the target panel; per-hop via a dict),
+  plus `color`/`width`/`style`/`box` overrides. `links=True/False` unchanged.
 
 ## [0.1.4] — 2026-06-25
 
