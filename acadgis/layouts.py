@@ -30,9 +30,10 @@ _LINKS = {
                (1, 2, ["tr", "br"], [(0, 1), (0, 0)])],
     "cascade": [(0, 1, ["bl", "br"], [(0, 1), (1, 1)]),
                 (1, 2, ["tr", "br"], [(0, 1), (0, 0)])],
-    "grid": [(0, 1, ["tr", "br"], [(0, 1), (0, 0)]),
-             (0, 2, ["bl", "br"], [(0, 1), (1, 1)]),
-             (1, 3, ["bl", "br"], [(0, 1), (1, 1)])],
+    # grid panels: [0 TL, 1 TR, 2 BL, 3 BR]; follow the drill-down chain 0->1->2->3
+    "grid": [(0, 1, ["r", "r"], [(0, 0.62), (0, 0.38)]),    # top-left -> top-right
+             (1, 2, ["b", "b"], [(1, 0.9), (0.75, 1)]),     # top-right -> bottom-left (diagonal)
+             (2, 3, ["r", "r"], [(0, 0.62), (0, 0.38)])],   # bottom-left -> bottom-right
 }
 
 

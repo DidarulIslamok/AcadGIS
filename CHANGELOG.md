@@ -6,6 +6,11 @@ All notable changes to **AcadGIS** are documented here. The format follows
 
 ## [0.2.0] — 2026-06-26
 
+### Fixed
+- **`grid` template connectors** followed `country→state`, `country→district`,
+  `state→sub-district` (skipping levels) instead of the drill-down chain. They
+  now link sequentially `0→1→2→3` (country → state → district → sub-district).
+
 ### Added
 - **Thematic map types** — completes the standard thematic catalogue (choropleth
   and graduated symbols already shipped). All single-import, publication-ready:
