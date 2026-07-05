@@ -23,6 +23,7 @@ from __future__ import annotations
 # --- batteries included: re-export the common scientific stack so users can
 # do everything through `agis.` without separate imports -------------------- #
 import geopandas as gpd  # noqa: E402
+import matplotlib as mpl  # noqa: E402
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
@@ -190,6 +191,7 @@ __all__ = [
     "show",
     # re-exported stack
     "plt",
+    "mpl",
     "np",
     "pd",
     "gpd",
