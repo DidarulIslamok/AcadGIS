@@ -19,6 +19,9 @@ keywords = [
     "administrative-boundaries", "gadm", "openstreetmap", "terrain",
     "hillshade", "dem", "rivers", "spatial-analysis", "qgis-alternative",
     "academic", "research",
+    "thematic-map", "heatmap", "dot-density", "cartogram", "bivariate-map",
+    "isopleth", "contour", "ndvi", "land-cover", "satellite", "basemap",
+    "raster", "sentinel-2", "esa-worldcover", "remote-sensing",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",

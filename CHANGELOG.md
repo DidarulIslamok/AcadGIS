@@ -4,7 +4,7 @@ All notable changes to **AcadGIS** are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
-## [0.2.0] — 2026-06-26
+## [0.2.0] — 2026-07-05
 
 ### Fixed
 - **`grid` template connectors** followed `country→state`, `country→district`,

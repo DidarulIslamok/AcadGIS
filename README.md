@@ -4,7 +4,7 @@
 
 <br><br>
 
-[![Version](https://img.shields.io/badge/version-0.1.0-2b6cb0.svg)](https://pypi.org/project/acadgis/)
+[![Version](https://img.shields.io/badge/version-0.2.0-2b6cb0.svg)](https://pypi.org/project/acadgis/)
 [![Python](https://img.shields.io/badge/python-3.9%2B-2d6a4f.svg)](https://pypi.org/project/acadgis/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-1b9aaa.svg)](LICENSE)
 [![Built on](https://img.shields.io/badge/built%20on-geopandas%20%C2%B7%20matplotlib-3ad29f.svg)](https://geopandas.org)
@@ -25,9 +25,10 @@
 ---
 
 AcadGIS is a Python package (and a no-code web app) for making **publication-ready study area
-maps, choropleth maps, locator insets, terrain relief and river maps** — for research papers,
-theses and reports. Name a place, add your data, and export a journal-ready figure: no QGIS,
-ArcGIS or shapefiles required.
+maps, choropleth and the full thematic-map catalogue, locator insets, terrain relief, raster &
+vector layers, satellite basemaps and river maps** — for research papers, theses and reports.
+Name a place, add your data, and export a journal-ready figure: no QGIS, ArcGIS or shapefiles
+required. Everything runs through a single `import acadgis as agis`.
 
 ```python
 import acadgis as agis
@@ -39,6 +40,29 @@ sa.save("study_area.png", dpi=300)
 
 Prefer no code? The companion web app at **[acadgis.com](https://acadgis.com)** offers the
 same figures with interactive editing — in the browser.
+
+---
+
+## Gallery
+
+<div align="center">
+<img src="assets/gallery/01_study_area_terrain.png" width="90%" alt="study area with terrain">
+<br><br>
+<img src="assets/gallery/02_ndvi_nile.png" width="32%" alt="Sentinel-2 NDVI">
+<img src="assets/gallery/03_satellite_dubai.png" width="32%" alt="satellite basemap">
+<img src="assets/gallery/04_topography_alps.png" width="32%" alt="topography">
+<br>
+<img src="assets/gallery/05_landcover_switzerland.png" width="32%" alt="ESA WorldCover land cover">
+<img src="assets/gallery/06_truecolor_venice.png" width="32%" alt="true-colour raster">
+<img src="assets/gallery/07_vector_japan.png" width="32%" alt="vector layers">
+<br>
+<img src="assets/gallery/08_roads_paris.png" width="32%" alt="OpenStreetMap roads">
+<img src="assets/gallery/09_sea_india.png" width="32%" alt="sea / ocean layer">
+<img src="assets/gallery/10_layers_composed.png" width="32%" alt="composed layers">
+
+<sub>NDVI (Sentinel-2) · land cover (ESA WorldCover 10 m) · satellite & OSM basemaps · DEM
+topography · true-colour rasters · vector overlays · roads · sea · composed thematic maps</sub>
+</div>
 
 ---
 

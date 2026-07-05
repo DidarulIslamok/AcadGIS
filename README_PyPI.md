@@ -7,7 +7,7 @@
 <p align="center"><b>Publication-ready study area maps for research — in a few lines of Python.</b></p>
 
 <p align="center">
-  <a href="https://pypi.org/project/acadgis/"><img src="https://img.shields.io/badge/version-0.1.0-2b6cb0.svg" alt="Version"></a>
+  <a href="https://pypi.org/project/acadgis/"><img src="https://img.shields.io/badge/version-0.2.0-2b6cb0.svg" alt="Version"></a>
   <a href="https://pypi.org/project/acadgis/"><img src="https://img.shields.io/badge/python-3.9%2B-2d6a4f.svg" alt="Python"></a>
   <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/license-Apache--2.0-1b9aaa.svg" alt="License"></a>
   <a href="https://doc.acadgis.com"><img src="https://img.shields.io/badge/docs-acadgis.com-ffb567.svg" alt="Docs"></a>
@@ -22,9 +22,10 @@
 ---
 
 AcadGIS is a Python package (and a no-code web app) for making publication-ready study area
-maps, choropleth maps, locator insets, terrain relief and river maps — for research papers,
-theses and reports. Name a place, add your data, and export a journal-ready figure in three
-lines: no QGIS, ArcGIS or shapefiles required.
+maps, choropleth and the full thematic-map catalogue, locator insets, terrain relief, raster &
+vector layers, satellite basemaps and river maps — for research papers, theses and reports.
+Name a place, add your data, and export a journal-ready figure in a few lines: no QGIS, ArcGIS
+or shapefiles required. Everything works through a single `import acadgis as agis`.
 
 ```python
 import acadgis as agis
@@ -37,6 +38,29 @@ sa.save("study_area.png", dpi=300)
 <p align="center">
   <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/examples/outputs/study_area_iraq.png" width="80%" alt="locator figure">
 </p>
+
+## Gallery
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/01_study_area_terrain.png" width="88%" alt="study area with terrain">
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/02_ndvi_nile.png" width="32%" alt="Sentinel-2 NDVI">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/03_satellite_dubai.png" width="32%" alt="satellite basemap">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/04_topography_alps.png" width="32%" alt="topography">
+  <br>
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/05_landcover_switzerland.png" width="32%" alt="ESA WorldCover land cover">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/06_truecolor_venice.png" width="32%" alt="true-colour raster">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/07_vector_japan.png" width="32%" alt="vector layers">
+  <br>
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/08_roads_paris.png" width="32%" alt="OpenStreetMap roads">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/09_sea_india.png" width="32%" alt="sea / ocean layer">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/10_layers_composed.png" width="32%" alt="composed layers">
+</p>
+
+<sub>NDVI (Sentinel-2), land cover (ESA WorldCover 10 m), satellite / OSM basemaps, DEM
+topography, true-colour rasters, vector overlays, roads, sea and composed thematic maps —
+all rendered with `import acadgis as agis`.</sub>
 
 ## Install
 
