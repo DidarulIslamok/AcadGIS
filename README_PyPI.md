@@ -7,8 +7,10 @@
 <p align="center"><b>Publication-ready study area maps for research — in a few lines of Python.</b></p>
 
 <p align="center">
-  <a href="https://pypi.org/project/acadgis/"><img src="https://img.shields.io/badge/version-0.2.0-2b6cb0.svg" alt="Version"></a>
-  <a href="https://pypi.org/project/acadgis/"><img src="https://img.shields.io/badge/python-3.9%2B-2d6a4f.svg" alt="Python"></a>
+  <a href="https://pypi.org/project/acadgis/"><img src="https://img.shields.io/pypi/v/acadgis?color=2b6cb0" alt="Version"></a>
+  <a href="https://pepy.tech/project/acadgis"><img src="https://static.pepy.tech/badge/acadgis" alt="Downloads"></a>
+  <a href="https://pypi.org/project/acadgis/"><img src="https://img.shields.io/pypi/dm/acadgis?color=2d6a4f&label=downloads/month" alt="Downloads/month"></a>
+  <a href="https://pypi.org/project/acadgis/"><img src="https://img.shields.io/pypi/pyversions/acadgis?color=2d6a4f" alt="Python"></a>
   <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/license-Apache--2.0-1b9aaa.svg" alt="License"></a>
   <a href="https://doc.acadgis.com"><img src="https://img.shields.io/badge/docs-acadgis.com-ffb567.svg" alt="Docs"></a>
 </p>
@@ -41,9 +43,6 @@ sa.save("study_area.png", dpi=300)
 
 ## Gallery
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/01_study_area_terrain.png" width="88%" alt="study area with terrain">
-</p>
 <p align="center">
   <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/02_ndvi_nile.png" width="32%" alt="Sentinel-2 NDVI">
   <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/03_satellite_dubai.png" width="32%" alt="satellite basemap">

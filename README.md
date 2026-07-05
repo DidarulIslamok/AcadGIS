@@ -4,17 +4,12 @@
 
 <br><br>
 
-[![Version](https://img.shields.io/badge/version-0.2.0-2b6cb0.svg)](https://pypi.org/project/acadgis/)
-[![Python](https://img.shields.io/badge/python-3.9%2B-2d6a4f.svg)](https://pypi.org/project/acadgis/)
+[![PyPI](https://img.shields.io/pypi/v/acadgis?color=2b6cb0)](https://pypi.org/project/acadgis/)
+[![Downloads](https://static.pepy.tech/badge/acadgis)](https://pepy.tech/project/acadgis)
+[![Downloads/month](https://img.shields.io/pypi/dm/acadgis?color=2d6a4f&label=downloads%2Fmonth)](https://pypi.org/project/acadgis/)
+[![Python](https://img.shields.io/pypi/pyversions/acadgis?color=2d6a4f)](https://pypi.org/project/acadgis/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-1b9aaa.svg)](LICENSE)
-[![Built on](https://img.shields.io/badge/built%20on-geopandas%20%C2%B7%20matplotlib-3ad29f.svg)](https://geopandas.org)
 [![Docs](https://img.shields.io/badge/docs-acadgis.com-ffb567.svg)](https://doc.acadgis.com)
-
-<!-- After publishing to PyPI and making the repo public, swap to live badges:
-[![PyPI](https://img.shields.io/pypi/v/acadgis)](https://pypi.org/project/acadgis/)
-[![Downloads](https://img.shields.io/pypi/dm/acadgis)](https://pypi.org/project/acadgis/)
-[![Stars](https://img.shields.io/github/stars/riponcm/AcadGIS)](https://github.com/riponcm/AcadGIS/stargazers)
--->
 
 ### Publication-ready study area maps for research — in a few lines of Python
 
