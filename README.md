@@ -218,7 +218,7 @@ work. If AcadGIS helps your research, a citation or a star is appreciated.
 
 ## Acknowledgments
 
-AcadGIS is developed with [**projectmem**](https://github.com/projectmem/projectmem) — a
+AcadGIS is developed with [**projectmem**](https://github.com/riponcm/projectmem) — a
 persistent memory + workflow layer that keeps the codebase's decisions, issues and context
 across sessions.
 
