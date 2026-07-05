@@ -146,6 +146,8 @@ agis.study_area("Bangladesh",                                  # whole layout, o
 - Source: https://github.com/riponcm/AcadGIS
 - Data: GADM (boundaries), Copernicus GLO-30 (terrain), Natural Earth and OpenStreetMap
   (hydrography). Free for academic and non-commercial use — please cite the sources.
+- Built with [projectmem](https://github.com/projectmem/projectmem) — the persistent
+  memory + workflow layer used to develop AcadGIS.
 
 ## License
 

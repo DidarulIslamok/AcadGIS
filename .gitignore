@@ -36,3 +36,4 @@ dist/
 # personal build/dev scripts — keep out of the public repo
 scripts/
 exports/
+ROADMAP.md

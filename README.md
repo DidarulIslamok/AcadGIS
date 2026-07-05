@@ -216,4 +216,10 @@ in your work. See [`NOTICE`](NOTICE).
 [Apache License 2.0](LICENSE) — free to use, modify and distribute, including in academic
 work. If AcadGIS helps your research, a citation or a star is appreciated.
 
+## Acknowledgments
+
+AcadGIS is developed with [**projectmem**](https://github.com/projectmem/projectmem) — a
+persistent memory + workflow layer that keeps the codebase's decisions, issues and context
+across sessions.
+
 <div align="center"><sub>Built on geopandas, matplotlib and shapely — for researchers, by a researcher.</sub></div>
