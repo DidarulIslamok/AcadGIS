@@ -44,22 +44,40 @@ sa.save("study_area.png", dpi=300)
 ## Gallery
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/02_ndvi_nile.png" width="32%" alt="Sentinel-2 NDVI">
-  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/03_satellite_dubai.png" width="32%" alt="satellite basemap">
-  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/04_topography_alps.png" width="32%" alt="topography">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/01_ndvi_dhaka.png" width="32%" alt="Sentinel-2 NDVI">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/02_topography_dem.png" width="32%" alt="DEM topography">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/03_basemap_styles.png" width="32%" alt="XYZ tile basemaps">
   <br>
-  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/05_landcover_switzerland.png" width="32%" alt="ESA WorldCover land cover">
-  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/06_truecolor_venice.png" width="32%" alt="true-colour raster">
-  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/07_vector_japan.png" width="32%" alt="vector layers">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/04_landcover_switzerland.png" width="32%" alt="ESA WorldCover land cover">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/05_landcover_dhaka.png" width="32%" alt="ESA WorldCover (Dhaka)">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/06_roads_osm.png" width="32%" alt="OpenStreetMap roads">
   <br>
-  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/08_roads_paris.png" width="32%" alt="OpenStreetMap roads">
-  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/09_sea_india.png" width="32%" alt="sea / ocean layer">
-  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/10_layers_composed.png" width="32%" alt="composed layers">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/07_rivers_sites.png" width="32%" alt="rivers + field sites">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/08_study_area_terrain.png" width="32%" alt="study area with terrain">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/09_study_area_grid.png" width="32%" alt="grid drill-down">
+  <br>
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/10_study_area_cascade.png" width="32%" alt="cascade drill-down">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/11_study_area_series.png" width="32%" alt="series layout">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/12_study_area_usa.png" width="32%" alt="USA locator">
+  <br>
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/13_study_area_china.png" width="32%" alt="China cascade">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/14_sea_india.png" width="32%" alt="sea / ocean layer">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/15_india_context.png" width="32%" alt="India context map">
+  <br>
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/16_uk_london.png" width="32%" alt="UK / London">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/17_themes.png" width="32%" alt="palettes & themes">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/18_usa_poster.png" width="32%" alt="USA states poster">
+  <br>
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/19_choropleth.png" width="32%" alt="choropleth">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/20_isopleth.png" width="32%" alt="interpolated isopleth">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/21_isolines.png" width="32%" alt="labelled isolines">
+  <br>
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/22_dot_density.png" width="32%" alt="dot-density">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/23_world_vegetation.png" width="32%" alt="world vegetation">
+  <img src="https://raw.githubusercontent.com/riponcm/AcadGIS/main/assets/gallery/24_world_choropleth.png" width="32%" alt="classed world choropleth">
 </p>
 
-<sub>NDVI (Sentinel-2), land cover (ESA WorldCover 10 m), satellite / OSM basemaps, DEM
-topography, true-colour rasters, vector overlays, roads, sea and composed thematic maps —
-all rendered with `import acadgis as agis`.</sub>
+<sub>Curated raster & satellite (NDVI · land cover · DEM · basemaps · roads) · study-area layouts · sea/ocean · choropleth · isopleth / isolines · dot-density · world thematic maps — every figure made with <code>import acadgis as agis</code>.</sub>
 
 ## Install
 
