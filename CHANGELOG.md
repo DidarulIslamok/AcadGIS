@@ -36,7 +36,9 @@ All notable changes to **AcadGIS** are documented here. The format follows
 - **Connector customization on `study_area()`** — `links=` now also accepts a
   dict for full control of the panel-to-panel connectors:
   `single` (one line per hop), `shrink=(a, b)` (trim/stretch each end in
-  points — negative extends), `dots`/`dot_size`/`dot_color` (enlargeable
+  points — negative extends), `arrow`/`arrow_size` (arrowhead at the
+  destination end — `True` or an arrowstyle like `"->"`/`"wedge"`),
+  `dots`/`dot_size`/`dot_color` (enlargeable
   endpoint markers), `alpha`, `pad` (locator-box padding), `anchors` (attach at
   any corner/edge name `tl·tr·bl·br·t·b·l·r·c` or an explicit `(lon, lat)`
   point → any `(x, y)` axes fraction on the target panel; per-hop via a dict),

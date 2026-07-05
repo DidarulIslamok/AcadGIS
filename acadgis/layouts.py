@@ -119,7 +119,8 @@ def _apply_highlight(ax, region_gdf, *, style, color, edge, alpha, lw, pad=0.12)
 
 def _box_link(fig, src_ax, geom, dst_ax, *, color, lw, linestyle, box,
               src_pick, dst_corners, pad=0.18, shrink=(0.0, 0.0),
-              dots=False, dot_size=6.0, dot_color=None, alpha=1.0):
+              dots=False, dot_size=6.0, dot_color=None, alpha=1.0,
+              arrow=False, arrow_size=14.0):
     from matplotlib.lines import Line2D
     from matplotlib.patches import ConnectionPatch, Rectangle
 
@@ -137,6 +138,8 @@ def _box_link(fig, src_ax, geom, dst_ax, *, color, lw, linestyle, box,
                "l": (x0, y0 + h / 2), "r": (x0 + w, y0 + h / 2)}
     sa, sb = shrink if isinstance(shrink, (list, tuple)) else (shrink, shrink)
     dc = dot_color or color
+    # arrow can be an arrowstyle string ("-|>", "->", "wedge", …) or True/False
+    astyle = (arrow if isinstance(arrow, str) else "-|>") if arrow else "-"
     for s, d in zip(src_pick, dst_corners):
         # source anchor: a named corner/edge ("tr", "c", "l", …) or an explicit
         # (lon, lat) point in the source panel's data coordinates
@@ -145,7 +148,8 @@ def _box_link(fig, src_ax, geom, dst_ax, *, color, lw, linestyle, box,
                                        xyB=d, coordsB=dst_ax.transAxes,
                                        color=color, lw=lw, linestyle=linestyle,
                                        alpha=alpha, zorder=50, clip_on=False,
-                                       shrinkA=sa, shrinkB=sb))
+                                       shrinkA=sa, shrinkB=sb, arrowstyle=astyle,
+                                       mutation_scale=arrow_size if arrow else 1))
         if dots:                        # enlargeable endpoint markers
             fig.add_artist(Line2D([xyA[0]], [xyA[1]], transform=src_ax.transData,
                                   marker="o", markersize=dot_size, color=dc,
@@ -224,6 +228,8 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
         links={'single': True,          # one line per hop instead of two
                'shrink': (8, -14),      # trim/extend each end, in points
                                         # (positive = shrink, negative = stretch)
+               'arrow': True,           # arrowhead at the destination (state) end
+               'arrow_size': 16,        # or arrow='->' / 'wedge' for other heads
                'dots': True,            # endpoint markers…
                'dot_size': 9,           # …enlarged
                'dot_color': '#b30000',
@@ -430,7 +436,9 @@ def study_area(country: str, steps: Optional[Sequence[Tuple[str, str]]] = None, 
                           dots=link_opts.get("dots", False),
                           dot_size=link_opts.get("dot_size", 6.0),
                           dot_color=link_opts.get("dot_color"),
-                          alpha=link_opts.get("alpha", 1.0))
+                          alpha=link_opts.get("alpha", 1.0),
+                          arrow=link_opts.get("arrow", False),
+                          arrow_size=link_opts.get("arrow_size", 14.0))
 
     if suptitle:
         fig.suptitle(suptitle, fontsize=15, fontweight="bold", y=0.98)

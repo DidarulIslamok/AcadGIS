@@ -61,6 +61,21 @@ def test_links_dict_color_override():
         (0x12 / 255, 0x34 / 255, 0x56 / 255), abs=1e-3)
 
 
+def test_links_arrow():
+    fig = agis.study_area("Bangladesh", STEPS, template="series", download=False,
+                          links={"single": True, "arrow": True, "arrow_size": 18})
+    cps = _cps(fig)
+    assert len(cps) == 2
+    # arrowhead present (not the plain "-" Curve line)
+    assert type(cps[0].get_arrowstyle()).__name__ != "Curve"
+
+
+def test_links_arrow_style_string():
+    fig = agis.study_area("Bangladesh", STEPS, template="series", download=False,
+                          links={"arrow": "->"})
+    assert len(_cps(fig)) >= 1
+
+
 def test_links_show_false():
     fig = agis.study_area("Bangladesh", STEPS, template="series", download=False,
                           links={"show": False, "dots": True})
